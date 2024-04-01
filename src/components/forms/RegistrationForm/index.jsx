@@ -42,14 +42,12 @@ const RegistrationForm = () => {
             <Flex direction="column" gap={10}>
                 <TextInput
                     label="Логин"
-                    radius="xs"
                     error={errors.login?.message}
                     {...register('login', requiredValidation())}
                 />
 
                 <TextInput
                     label="Почта"
-                    radius="xs"
                     error={errors.email?.message}
                     {...register('email', emailValidation())}
                 />
@@ -58,7 +56,6 @@ const RegistrationForm = () => {
                     <TextInput
                         style={{ flex: 1 }}
                         label="Имя"
-                        radius="xs"
                         error={errors.first_name?.message}
                         {...register('first_name', requiredValidation())}
                     />
@@ -66,14 +63,12 @@ const RegistrationForm = () => {
                     <TextInput
                         style={{ flex: 1 }}
                         label="Фамилия"
-                        radius="xs"
                         error={errors.surname?.message}
                         {...register('surname', requiredValidation())}
                     />
                 </Flex>
 
                 <PasswordInput
-                    radius="xs"
                     label="Пароль"
                     error={errors.password?.message}
                     {...register('password', passwordValidation())}

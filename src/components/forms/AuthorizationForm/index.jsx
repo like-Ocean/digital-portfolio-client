@@ -1,14 +1,15 @@
-import { Button, Flex, PasswordInput, TextInput } from '@mantine/core';
+import {Button, Flex, PasswordInput, rem, TextInput} from '@mantine/core';
 import { passwordValidation, requiredValidation } from '../../../constants/validation.js';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { authorizationApi } from "../../../api/users/authorization.js";
-import { useNavigate } from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {userActions} from "../../../store/reducers/user-slice.js";
+import { authorizationApi } from '../../../api/users/authorization.js';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { userActions } from '../../../store/reducers/user-slice.js';
+import { IconKey, IconUser } from '@tabler/icons-react';
 
 const AuthorizationForm = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const {
@@ -20,11 +21,8 @@ const AuthorizationForm = () => {
     const onSubmit = async (data) => {
         setLoading(true);
         try {
-            const res = await authorizationApi(
-              data.login,
-              data.password
-            );
-            dispatch(userActions.login(res.data))
+            const res = await authorizationApi(data.login, data.password);
+            dispatch(userActions.login(res.data));
             navigate('/some');
         } catch (e) {
             console.log(e);
@@ -36,26 +34,20 @@ const AuthorizationForm = () => {
             <Flex direction="column" gap={10}>
                 <TextInput
                     label="Логин"
-                    radius="xs"
                     error={errors.login?.message}
+                    leftSection={<IconUser style={{ width: rem(16), height: rem(16) }}/>}
                     {...register('login', requiredValidation())}
                 />
+
                 <PasswordInput
                     label="Пароль"
-                    radius="xs"
                     error={errors.login?.message}
+                    leftSection={<IconKey style={{ width: rem(16), height: rem(16) }}/>}
                     {...register('password', passwordValidation())}
                 />
             </Flex>
 
-            <Button
-                type="submit"
-                loading={loading}
-                color="blue"
-                fullWidth
-                mt="md"
-                radius="md"
-            >
+            <Button type="submit" loading={loading} color="blue" fullWidth mt="md" radius="md">
                 Войти
             </Button>
         </form>
