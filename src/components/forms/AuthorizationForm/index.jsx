@@ -1,4 +1,4 @@
-import {Button, Flex, PasswordInput, rem, TextInput} from '@mantine/core';
+import { Button, Flex, PasswordInput, rem, TextInput } from '@mantine/core';
 import { passwordValidation, requiredValidation } from '../../../constants/validation.js';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -35,14 +35,14 @@ const AuthorizationForm = () => {
                 <TextInput
                     label="Логин"
                     error={errors.login?.message}
-                    leftSection={<IconUser style={{ width: rem(16), height: rem(16) }}/>}
+                    leftSection={<IconUser style={{ width: rem(16), height: rem(16) }} />}
                     {...register('login', requiredValidation())}
                 />
 
                 <PasswordInput
                     label="Пароль"
                     error={errors.login?.message}
-                    leftSection={<IconKey style={{ width: rem(16), height: rem(16) }}/>}
+                    leftSection={<IconKey style={{ width: rem(16), height: rem(16) }} />}
                     {...register('password', passwordValidation())}
                 />
             </Flex>
