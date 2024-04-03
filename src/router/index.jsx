@@ -3,6 +3,7 @@ import { Registration } from '../pages/Registration.jsx';
 import { Authorization } from '../pages/Authorization.jsx';
 import { AuthNonRequired } from './AuthNonRequired.jsx';
 import { AuthRequired } from './AuthRequired.jsx';
+import {UserProfile} from "../pages/UserProfile.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -25,12 +26,17 @@ export const router = createBrowserRouter([
             {
                 path: '/',
                 element: 'home Page',
-            },
+            }
         ],
     },
 
     {
+        path: '/profile',
+        element: <UserProfile />,
+    },
+    {
         path: '/*',
         element: <Navigate to="/" />,
     },
+
 ]);
