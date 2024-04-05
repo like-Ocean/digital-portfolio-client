@@ -1,0 +1,14 @@
+button.control {
+    display: block;
+    padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
+    border-radius: var(--mantine-radius-md);
+    font-weight: 500;
+}
+
+button.control:hover {
+    background-color: var(--mantine-color-gray-0);
+}
+
+button.active {
+    background-color: var(--mantine-color-blue-2);
+}
