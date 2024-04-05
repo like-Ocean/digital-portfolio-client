@@ -9,6 +9,7 @@ button.control:hover {
     background-color: var(--mantine-color-gray-0);
 }
 
-button.active {
-    background-color: var(--mantine-color-blue-2);
+button.control a {
+    color: inherit;
+    text-decoration: none;
 }

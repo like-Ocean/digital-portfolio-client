@@ -1,15 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    isAuth: true,
+    isAuth: false,
     user: {
-        id: 1,
-        login: 'helops',
-        email: 'ihelops@yandex.ru',
-        first_name: 'Ахтем',
-        surname: 'Махтиев',
-        phone: '89220334557',
-        about: 'mama',
+        id: null,
+        login: null,
+        email: null,
+        first_name: null,
+        surname: null,
+        phone: null,
+        about: null,
     },
 };
 
@@ -19,9 +19,9 @@ export const userSlice = createSlice({
     reducers: {
         login: (state, action) => {
             state.isAuth = true;
-            state.user = action.payload;
+            state.user = action.payload
         },
-        logout: () => initialState,
+        logout: () => initialState
     },
 });
 

@@ -3,7 +3,8 @@ import { Registration } from '../pages/Registration.jsx';
 import { Authorization } from '../pages/Authorization.jsx';
 import { AuthNonRequired } from './AuthNonRequired.jsx';
 import { AuthRequired } from './AuthRequired.jsx';
-import {UserProfile} from "../pages/UserProfile.jsx";
+import { UserProfile } from '../pages/UserProfile.jsx';
+import { Home } from '../pages/Home.jsx';
 
 export const router = createBrowserRouter([
     {
@@ -25,8 +26,8 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: 'home Page',
-            }
+                element: <Home />,
+            },
         ],
     },
 
@@ -38,5 +39,4 @@ export const router = createBrowserRouter([
         path: '/*',
         element: <Navigate to="/" />,
     },
-
 ]);
