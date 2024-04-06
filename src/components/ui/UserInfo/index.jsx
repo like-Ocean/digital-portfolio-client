@@ -53,9 +53,6 @@ export const UserInfo = () => {
             <Button fullWidth mt="md" radius="md">
                 Изменить
             </Button>
-            <Button color="red" fullWidth mt="xs" radius="md">
-                Удалить
-            </Button>
         </Card>
     );
 };

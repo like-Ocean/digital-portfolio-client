@@ -5,6 +5,7 @@ import { AuthNonRequired } from './AuthNonRequired.jsx';
 import { AuthRequired } from './AuthRequired.jsx';
 import { UserProfile } from '../pages/UserProfile.jsx';
 import { Home } from '../pages/Home.jsx';
+import {ProjectId} from "../pages/ProjectId.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
     {
         path: '/profile',
         element: <UserProfile />,
+    },
+    {
+        path: '/project/:id',
+        element: <ProjectId />,
     },
     {
         path: '/*',
