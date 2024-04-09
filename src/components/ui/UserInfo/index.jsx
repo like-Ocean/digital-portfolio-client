@@ -1,72 +1,75 @@
-import {Avatar, Badge, Button, Card, Flex, Modal, Text} from '@mantine/core';
-import {useDisclosure} from "@mantine/hooks";
-import EditUserForm from "../../forms/EditUserForm/index.jsx";
-import PropTypes from "prop-types";
+import { Avatar, Badge, Button, Card, Flex, Modal, Text } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import EditUserForm from '../../forms/EditUserForm/index.jsx';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 export const UserInfo = ({ user }) => {
-
+    const userState = useSelector((state) => state.user.user);
     const [opened, { open, close }] = useDisclosure(false);
+
     return (
         <Card shadow="xl" padding="md">
             <Flex justify="center" align="center" mt="md" mb="xs">
                 <Avatar color="cyan" size={90}>
-                    {user.first_name[0] + user.surname[0]}
+                    {user?.first_name[0] + user?.surname[0]}
                 </Avatar>
             </Flex>
             <Text align="center" mt="xs" mb="xs" fw={500}>
-                {user.login}
+                {user?.login}
             </Text>
             <Flex gap="md" justify="center" align="flex-start" direction="column">
-                <Text size="sm">
+                <Flex>
                     <Badge color="blue" mr="md">
                         Имя:
                     </Badge>
-                    {user.first_name}
-                </Text>
+                    <Text size="sm">{user?.first_name}</Text>
+                </Flex>
 
-                <Text size="sm">
+                <Flex>
                     <Badge color="blue" mr="md">
                         Фамилия:
                     </Badge>
-                    {user.surname}
-                </Text>
+                    <Text size="sm">{user?.surname}</Text>
+                </Flex>
 
-                <Text size="sm">
+                <Flex>
                     <Badge color="blue" mr="md">
                         Телефон:
                     </Badge>
-                    {user.phone}
-                </Text>
+                    <Text size="sm">{user?.phone}</Text>
+                </Flex>
 
-                <Text size="sm">
+                <Flex>
                     <Badge color="blue" mr="md">
                         Почта:
                     </Badge>
-                    {user.email}
-                </Text>
+                    <Text size="sm">{user?.email}</Text>
+                </Flex>
 
-                <Text size="sm">
+                <Flex>
                     <Badge color="blue" mr="md">
                         О себе:
                     </Badge>
-                    {user.about}
-                </Text>
+                    <Text size="sm">{user?.about}</Text>
+                </Flex>
             </Flex>
-
 
             <Modal opened={opened} onClose={close} title="Редактировать" size={550}>
                 <EditUserForm opened={opened} onClose={close} />
             </Modal>
 
-            <Button fullWidth mt="md" radius="md" onClick={open}>
-                Изменить
-            </Button>
+            {userState?.id === user?.id && (
+                <Button fullWidth mt="md" radius="md" onClick={open}>
+                    Изменить
+                </Button>
+            )}
         </Card>
     );
 };
 
 UserInfo.propTypes = {
-    user:{
+    user: PropTypes.shape({
         id: PropTypes.number,
         login: PropTypes.string,
         email: PropTypes.string,
@@ -74,5 +77,5 @@ UserInfo.propTypes = {
         surname: PropTypes.string,
         phone: PropTypes.string,
         about: PropTypes.string,
-    }
+    }),
 };

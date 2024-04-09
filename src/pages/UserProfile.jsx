@@ -1,42 +1,31 @@
 import { Layout } from '../components/ui/Layout/index.jsx';
-import { Grid, Tabs, Button, Card, Text, Modal } from '@mantine/core';
+import { Grid, Tabs, Button, LoadingOverlay, Box } from '@mantine/core';
 import { UserInfo } from '../components/ui/UserInfo/index.jsx';
-import { ProjectCard } from '../components/ui/ProjectCard/index.jsx';
-import { useEffect, useState } from 'react';
-import { getUserProjectsApi } from '../api/users/get-user-projects.js';
-import { IconPlus } from '@tabler/icons-react';
-import { useDisclosure } from '@mantine/hooks';
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getUserByIdApi } from '../api/users/get-user-by-id.js';
+import { useUserById } from '../hooks/useUserById.js';
+import { ProjectsTab } from '../components/tabs/ProjectsTab/ProjectsTab.jsx';
+import { useSelector } from 'react-redux';
 
 export const UserProfile = () => {
-    const [projects, setProjects] = useState([]);
-    const [user, setUser] = useState();
-    const [opened, { open, close }] = useDisclosure(false);
     const navigate = useNavigate();
-    const params = useParams();
+    const { userId } = useParams();
+
+    const userState = useSelector((state) => state.user.user);
+    const [user, userLoading, userError] = useUserById(userId);
 
     useEffect(() => {
-        const fetch = async () => {
-            try {
-                const user = await getUserByIdApi(params.id);
-                setUser(user.data);
-                const projects = await getUserProjectsApi(params.id);
-                setProjects(projects.data);
-            } catch (e) {
-                navigate('/');
-            }
-        };
-
-        fetch().then();
-
-    }, [params.id, navigate]);
+        if (userError) navigate('/');
+    }, [userError, navigate]);
 
     return (
         <Layout>
             <Grid>
                 <Grid.Col span={3}>
-                    {user && <UserInfo user={user}/>}
+                    <Box pos="relative">
+                        <LoadingOverlay visible={userLoading} />
+                        <UserInfo user={userState.id === +userId ? userState : user} />
+                    </Box>
                 </Grid.Col>
 
                 <Grid.Col span={9}>
@@ -48,43 +37,7 @@ export const UserProfile = () => {
                         </Tabs.List>
 
                         <Tabs.Panel value="projects">
-                            <Grid mt={10}>
-                                <Grid.Col span={4}>
-                                    <Card
-                                        withBorder
-                                        padding="xs"
-                                        style={{ cursor: 'pointer' }}
-                                        onClick={open}
-                                    >
-                                        <Card.Section
-                                            style={{
-                                                display: 'flex',
-                                                background: '#e1f8fc',
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                height: 200,
-                                            }}
-                                        >
-                                            <IconPlus
-                                                style={{ width: 100, height: 100 }}
-                                                color="#288ce4"
-                                                stroke={1.55}
-                                            />
-                                        </Card.Section>
-
-                                        <Text fw={500} size="lg" mt="xs">
-                                            Создать проект
-                                        </Text>
-                                    </Card>
-                                    <Modal opened={opened} onClose={close} title="Создать проект">
-                                        Тут будет добавление проекта
-                                    </Modal>
-                                </Grid.Col>
-
-                                {projects.map((project) => (
-                                    <ProjectCard key={project.id} project={project} />
-                                ))}
-                            </Grid>
+                            <ProjectsTab />
                         </Tabs.Panel>
 
                         <Tabs.Panel value="certificates">certificates tab content</Tabs.Panel>

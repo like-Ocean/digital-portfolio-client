@@ -5,7 +5,7 @@ import { AuthNonRequired } from './AuthNonRequired.jsx';
 import { AuthRequired } from './AuthRequired.jsx';
 import { UserProfile } from '../pages/UserProfile.jsx';
 import { Home } from '../pages/Home.jsx';
-import {InnerProject} from "../pages/InnerProject.jsx";
+import { InnerProject } from '../pages/InnerProject.jsx';
 
 export const router = createBrowserRouter([
     {
@@ -24,22 +24,22 @@ export const router = createBrowserRouter([
 
     {
         element: <AuthRequired />,
-        children: [
-            {
-                path: '/',
-                element: <Home />,
-            },
-        ],
+        children: [],
     },
 
     {
-        path: '/profile/:id',
+        path: '/',
+        element: <Home />,
+    },
+    {
+        path: '/profile/:userId',
         element: <UserProfile />,
     },
     {
         path: '/project/:id',
         element: <InnerProject />,
     },
+
     {
         path: '/*',
         element: <Navigate to="/" />,
