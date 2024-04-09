@@ -1,8 +1,11 @@
-import { Avatar, Badge, Button, Card, Flex, Text } from '@mantine/core';
-import { useSelector } from 'react-redux';
+import {Avatar, Badge, Button, Card, Flex, Modal, Text} from '@mantine/core';
+import {useDisclosure} from "@mantine/hooks";
+import EditUserForm from "../../forms/EditUserForm/index.jsx";
+import PropTypes from "prop-types";
 
-export const UserInfo = () => {
-    const { user } = useSelector((state) => state.user);
+export const UserInfo = ({ user }) => {
+
+    const [opened, { open, close }] = useDisclosure(false);
     return (
         <Card shadow="xl" padding="md">
             <Flex justify="center" align="center" mt="md" mb="xs">
@@ -50,9 +53,26 @@ export const UserInfo = () => {
                 </Text>
             </Flex>
 
-            <Button fullWidth mt="md" radius="md">
+
+            <Modal opened={opened} onClose={close} title="Редактировать" size={550}>
+                <EditUserForm opened={opened} onClose={close} />
+            </Modal>
+
+            <Button fullWidth mt="md" radius="md" onClick={open}>
                 Изменить
             </Button>
         </Card>
     );
+};
+
+UserInfo.propTypes = {
+    user:{
+        id: PropTypes.number,
+        login: PropTypes.string,
+        email: PropTypes.string,
+        first_name: PropTypes.string,
+        surname: PropTypes.string,
+        phone: PropTypes.string,
+        about: PropTypes.string,
+    }
 };

@@ -1,33 +1,42 @@
 import { Layout } from '../components/ui/Layout/index.jsx';
-import {Grid, Tabs, Button, Card, Text, Modal} from '@mantine/core';
+import { Grid, Tabs, Button, Card, Text, Modal } from '@mantine/core';
 import { UserInfo } from '../components/ui/UserInfo/index.jsx';
 import { ProjectCard } from '../components/ui/ProjectCard/index.jsx';
 import { useEffect, useState } from 'react';
 import { getUserProjectsApi } from '../api/users/get-user-projects.js';
-import { useSelector } from 'react-redux';
 import { IconPlus } from '@tabler/icons-react';
-import {useDisclosure} from "@mantine/hooks";
+import { useDisclosure } from '@mantine/hooks';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getUserByIdApi } from '../api/users/get-user-by-id.js';
 
 export const UserProfile = () => {
     const [projects, setProjects] = useState([]);
-    const user = useSelector((state) => state.user.user);
+    const [user, setUser] = useState();
     const [opened, { open, close }] = useDisclosure(false);
+    const navigate = useNavigate();
+    const params = useParams();
 
     useEffect(() => {
-        getUserProjectsApi(user.id)
-            .then((projectsData) => {
-                setProjects(projectsData.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, [user.id]);
+        const fetch = async () => {
+            try {
+                const user = await getUserByIdApi(params.id);
+                setUser(user.data);
+                const projects = await getUserProjectsApi(params.id);
+                setProjects(projects.data);
+            } catch (e) {
+                navigate('/');
+            }
+        };
+
+        fetch().then();
+
+    }, [params.id, navigate]);
 
     return (
         <Layout>
             <Grid>
                 <Grid.Col span={3}>
-                    <UserInfo />
+                    {user && <UserInfo user={user}/>}
                 </Grid.Col>
 
                 <Grid.Col span={9}>
@@ -44,7 +53,7 @@ export const UserProfile = () => {
                                     <Card
                                         withBorder
                                         padding="xs"
-                                        style={{cursor: "pointer"}}
+                                        style={{ cursor: 'pointer' }}
                                         onClick={open}
                                     >
                                         <Card.Section
@@ -78,9 +87,7 @@ export const UserProfile = () => {
                             </Grid>
                         </Tabs.Panel>
 
-                        <Tabs.Panel value="certificates">
-                            certificates tab content
-                        </Tabs.Panel>
+                        <Tabs.Panel value="certificates">certificates tab content</Tabs.Panel>
 
                         <Tabs.Panel value="privacy">
                             privacy tab content

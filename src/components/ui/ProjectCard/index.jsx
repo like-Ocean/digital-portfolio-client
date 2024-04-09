@@ -16,7 +16,7 @@ export const ProjectCard = ({ project }) => {
             >
                 <Card.Section>
                     <Image
-                        src={project.files[0] ? getFile(project.files[0].file_id) : "./src/assets/9214833.jpg"}
+                        src={project.files[0] ? getFile(project.files[0].file_id) : "/src/assets/9214833.jpg"}
                         h={200}
                         style={{ objectFit: 'cover' }}
                     />

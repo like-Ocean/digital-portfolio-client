@@ -26,8 +26,8 @@ export const ProjectInfo = () => {
                 >
                     <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
                 </ActionIcon>
-                <Modal opened={opened} onClose={close} title="Authentication">
-                    {/* Modal content */}
+                <Modal opened={opened} onClose={close} title="Редактировать">
+                    изменить инфу проекта
                 </Modal>
             </Flex>
             <Flex mih={50} mb={20} justify="flex-start" align="center" direction="row" gap="sm">

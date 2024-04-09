@@ -21,7 +21,10 @@ export const userSlice = createSlice({
             state.isAuth = true;
             state.user = action.payload
         },
-        logout: () => initialState
+        logout: () => initialState,
+        updateUser: (state, action) => {
+            state.user = { ...state.user, ...action.payload };
+        }
     },
 });
 
