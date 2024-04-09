@@ -12,7 +12,7 @@ export const Menu = () => {
             </UnstyledButton>
 
             <UnstyledButton className={style.control}>
-                <Link to={`/profile:${user.id}`}>Профиль</Link>
+                <Link to={`/profile/${user.id}`}>Профиль</Link>
             </UnstyledButton>
         </>
     );
