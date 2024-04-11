@@ -80,8 +80,8 @@ export const ProjectInfo = ({project}) => {
 ProjectInfo.propTypes = {
     project: PropTypes.shape({
         id: PropTypes.number,
-        name: PropTypes.string, // Добавьте это
-        creation_date: PropTypes.string, // И это
+        name: PropTypes.string,
+        creation_date: PropTypes.string,
         description: PropTypes.string,
 
         category: PropTypes.shape({

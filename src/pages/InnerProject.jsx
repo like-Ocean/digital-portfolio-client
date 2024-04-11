@@ -8,7 +8,7 @@ import {getProjectByIdApi} from "../api/projects/get-project-by-id.js";
 
 export const InnerProject = () => {
     const params = useParams();
-    const [project, setProjects] = useState([]);
+    const [project, setProject] = useState();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState();
 
@@ -17,7 +17,7 @@ export const InnerProject = () => {
             setLoading(true);
             try {
                 const res = await getProjectByIdApi(params.id);
-                setProjects(res.data);
+                setProject(res.data);
                 console.log(res.data);
             } catch (e) {
                 setError(e);
@@ -39,7 +39,7 @@ export const InnerProject = () => {
 
                         <Grid.Col span={6}>
                             <LoadingOverlay visible={loading} />
-                            <ProjectInfo project={project}/>
+                            {project && <ProjectInfo project={project}/>}
                         </Grid.Col>
                     </Grid>
                 </Card>
