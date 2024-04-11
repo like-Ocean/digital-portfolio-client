@@ -1,19 +1,23 @@
 import {ActionIcon, Avatar, Flex, Modal, Rating, Text} from '@mantine/core';
 import { Comment } from '../Comment/index.jsx';
 import { IconEdit } from '@tabler/icons-react';
-import {useDisclosure} from "@mantine/hooks";
+import { useDisclosure } from '@mantine/hooks';
+import { useNavigate} from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-export const ProjectInfo = () => {
+export const ProjectInfo = ({project}) => {
+    const router = useNavigate();
     const [opened, { open, close }] = useDisclosure(false);
+
     return (
         <div style={{ position: 'relative' }}>
             <Flex mih={50} mb={20} justify="center" align="center" direction="column">
                 <Flex direction="column" align="center">
                     <Text size="lg" fw={500}>
-                        Название проекта
+                        {project.name}
                     </Text>
                     <Text size="sm" c="dimmed">
-                        12.09.23
+                        {project.creation_date}
                     </Text>
                 </Flex>
                 <ActionIcon
@@ -27,31 +31,35 @@ export const ProjectInfo = () => {
                     <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
                 </ActionIcon>
                 <Modal opened={opened} onClose={close} title="Редактировать">
-                    изменить инфу проекта
+                    изменить инфу проекта и удалить проект
                 </Modal>
             </Flex>
             <Flex mih={50} mb={20} justify="flex-start" align="center" direction="row" gap="sm">
                 <Avatar color="cyan" size={50}>
-                    BK
+                    {project.user && project.user.first_name[0] + project.user.surname[0]}
                 </Avatar>
-                <Text fw={500}>Логин пользователя</Text>
+                <Text
+                    fw={500}
+                    onClick={() => router(`/profile/${project.user.id}`)}
+                    style={{ cursor: 'pointer' }}
+                >
+                    {project.user && project.user.login}
+                </Text>
             </Flex>
 
             <Flex direction="column" gap="sm">
-                <Text size="md" fw={500}>
-                    Категория:
-                    <Text size="sm">Сварка</Text>
-                </Text>
-
-                <Text size="md" fw={500}>
-                    Описание:
-                    <Text size="sm">
-                        Сварка - это один из самых важных процессов в промышленности, строительстве
-                        и производстве. Создание сварочного проекта требует не только хорошего
-                        понимания технологий сварки, но и учета множества других факторов. Давайте
-                        рассмотрим ключевые этапы и особенности разработки сварочного проекта.
+                <Flex direction="column">
+                    <Text size="md" fw={500}>
+                        Категория:
                     </Text>
-                </Text>
+                    <Text size="sm">{project.category && project.category.name}</Text>
+                </Flex>
+                <Flex direction="column">
+                    <Text size="md" fw={500}>
+                        Описание:
+                    </Text>
+                    <Text size="sm">{project.description}</Text>
+                </Flex>
                 <Flex gap="sm" align="center" justify="flex-start">
                     <Text size="md" fw={500}>
                         Оценки
@@ -61,9 +69,34 @@ export const ProjectInfo = () => {
                 <Text size="md" fw={500}>
                     Комментарии:
                 </Text>
+                [форма для оставления комментариев(создать фому в components/forms)]
                 <Comment />
                 <Comment />
             </Flex>
         </div>
     );
+};
+
+ProjectInfo.propTypes = {
+    project: PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string, // Добавьте это
+        creation_date: PropTypes.string, // И это
+        description: PropTypes.string,
+
+        category: PropTypes.shape({
+            name: PropTypes.string,
+        }),
+        user: PropTypes.shape({
+            id: PropTypes.number,
+            login: PropTypes.string,
+            first_name: PropTypes.string,
+            surname: PropTypes.string,
+        }),
+        files: PropTypes.arrayOf(
+            PropTypes.shape({
+                file_id: PropTypes.string,
+            }),
+        ),
+    }),
 };

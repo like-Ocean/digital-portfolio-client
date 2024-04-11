@@ -12,12 +12,14 @@ export const Comment = () => {
                 <Avatar color="red" size={40}>
                     MC
                 </Avatar>
-                <Text fw={500} size="md">
-                    Логин пользователя
+                <Flex direction="column">
+                    <Text fw={500} size="md">
+                        Логин пользователя
+                    </Text>
                     <Text size="xs" c="dimmed">
                         Дата написания: 16.10.23
                     </Text>
-                </Text>
+                </Flex>
             </Flex>
             <Text mt="md">
                 Давно выяснено, что при оценке дизайна и композиции читаемый
