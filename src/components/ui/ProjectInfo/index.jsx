@@ -1,13 +1,36 @@
-import {ActionIcon, Avatar, Flex, Modal, Rating, Text} from '@mantine/core';
+import {ActionIcon, Avatar, Flex, LoadingOverlay, Modal, Rating, Text} from '@mantine/core';
 import { Comment } from '../Comment/index.jsx';
 import { IconEdit } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
-import { useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import PropTypes from 'prop-types';
+import {useEffect, useState} from "react";
+import {getCommentsByProjectIdAPI} from "../../../api/comments/get-comments-by-project-id.js";
 
 export const ProjectInfo = ({project}) => {
     const router = useNavigate();
     const [opened, { open, close }] = useDisclosure(false);
+
+    const params = useParams();
+    const [comments, setComment] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState();
+
+    useEffect(() => {
+        const fetch = async () => {
+            setLoading(true);
+            try {
+                const res = await getCommentsByProjectIdAPI(params.id);
+                setComment(res.data);
+                console.log(res.data)
+            } catch (e) {
+                setError(e);
+            }
+            setLoading(false);
+        };
+
+        fetch();
+    }, [params.id]);
 
     return (
         <div style={{ position: 'relative' }}>
@@ -60,18 +83,23 @@ export const ProjectInfo = ({project}) => {
                     </Text>
                     <Text size="sm">{project.description}</Text>
                 </Flex>
+
                 <Flex gap="sm" align="center" justify="flex-start">
                     <Text size="md" fw={500}>
                         Оценки
                     </Text>
                     <Rating fractions={2} defaultValue={1.5} /> 3.9
                 </Flex>
+
                 <Text size="md" fw={500}>
                     Комментарии:
                 </Text>
                 [форма для оставления комментариев(создать фому в components/forms)]
-                <Comment />
-                <Comment />
+
+                <LoadingOverlay visible={loading} />
+                {comments && comments.map((comment) => (
+                    <Comment key={comment.id} comment={comment} />
+                ))}
             </Flex>
         </div>
     );

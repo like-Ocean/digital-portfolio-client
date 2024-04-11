@@ -1,38 +1,44 @@
-import {Avatar, Card, Flex, Text} from "@mantine/core";
+import { Avatar, Card, Flex, Text } from '@mantine/core';
+import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
-export const Comment = () => {
+export const Comment = ({ comment }) => {
+    const router = useNavigate();
     return (
         <Card shadow="null" withBorder>
-            <Flex
-                direction="row"
-                gap="sm"
-                justify="flex-start"
-                align="center"
-            >
+            <Flex direction="row" gap="sm" justify="flex-start" align="center">
                 <Avatar color="red" size={40}>
-                    MC
+                    {comment.user.first_name[0] + comment.user.surname[0]}
                 </Avatar>
                 <Flex direction="column">
-                    <Text fw={500} size="md">
-                        Логин пользователя
+                    <Text
+                        fw={500}
+                        size="md"
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => router(`/profile/${comment.user.id}`)}
+                    >
+                        {comment.user.login}
                     </Text>
                     <Text size="xs" c="dimmed">
-                        Дата написания: 16.10.23
+                        Дата написания: {comment.post_date}
                     </Text>
                 </Flex>
             </Flex>
-            <Text mt="md">
-                Давно выяснено, что при оценке дизайна и композиции читаемый
-                текст мешает сосредоточиться. Lorem Ipsum используют потому,
-                что тот обеспечивает более или менее стандартное заполнение
-                шаблона, а также реальное распределение букв и пробелов в
-                абзацах, которое не получается при простой дубликации "Здесь
-                ваш текст.. Здесь ваш текст.. Здесь ваш текст.." Многие
-                программы электронной вёрстки и редакторы HTML используют
-                Lorem Ipsum в качестве текста по умолчанию, так что поиск по
-                ключевым словам "lorem ipsum" сразу показывает, как много
-                веб-страниц всё ещё дожидаются своего настоящего рождения.
-            </Text>
+            <Text mt="md">{comment.comment}</Text>
         </Card>
     );
+};
+
+Comment.propTypes = {
+    comment: PropTypes.shape({
+        id: PropTypes.number,
+        comment: PropTypes.string,
+        post_date: PropTypes.string,
+        user: PropTypes.shape({
+            id: PropTypes.number,
+            login: PropTypes.string,
+            first_name: PropTypes.string,
+            surname: PropTypes.string,
+        }),
+    }),
 };

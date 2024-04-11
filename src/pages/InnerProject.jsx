@@ -18,7 +18,6 @@ export const InnerProject = () => {
             try {
                 const res = await getProjectByIdApi(params.id);
                 setProject(res.data);
-                console.log(res.data);
             } catch (e) {
                 setError(e);
             }
@@ -34,7 +33,7 @@ export const InnerProject = () => {
                 <Card shadow="sm" radius="md" withBorder w={1000}>
                     <Grid>
                         <Grid.Col span={6}>
-                            <ProjectImgs/>
+                            {project && <ProjectImgs files={project.files}/>}
                         </Grid.Col>
 
                         <Grid.Col span={6}>
