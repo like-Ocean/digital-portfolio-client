@@ -12,6 +12,9 @@ export const commentSlice = createSlice({
             state.comments = action.payload;
         },
         clearComments: () => initialState,
+        addComment: (state, action) => {
+            state.comments.push(action.payload);
+        },
     },
 });
 

@@ -32,11 +32,11 @@ export const InnerProject = () => {
             <Flex align="center" justify="center">
                 <Card shadow="sm" radius="md" withBorder w={1000}>
                     <Grid>
-                        <Grid.Col span={6}>
+                        <Grid.Col span={{ base: 12, md: 12, lg: 6 }}>
                             {project && <ProjectImgs files={project.files}/>}
                         </Grid.Col>
 
-                        <Grid.Col span={6}>
+                        <Grid.Col span={{ base: 12, md: 12, lg: 6 }}>
                             <LoadingOverlay visible={loading} />
                             {project && <ProjectInfo project={project}/>}
                         </Grid.Col>
