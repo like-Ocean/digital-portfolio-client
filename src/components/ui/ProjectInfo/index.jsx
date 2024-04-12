@@ -5,7 +5,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { getCommentsByProjectIdAPI } from '../../../api/comments/get-comments-by-project-id.js';
+import { getCommentsByProjectIdApi } from '../../../api/comments/get-comments-by-project-id.js';
 import { AddCommentForm } from '../../forms/AddCommentForm/index.jsx';
 
 export const ProjectInfo = ({ project }) => {
@@ -21,11 +21,16 @@ export const ProjectInfo = ({ project }) => {
         setComment([...comments, newComment]);
     };
 
+    const onCommentDelete = (id) => {
+        setComment((pref) => pref.filter((comment) => comment.id !== id))
+    }
+
+
     useEffect(() => {
         const fetch = async () => {
             setLoading(true);
             try {
-                const res = await getCommentsByProjectIdAPI(params.id);
+                const res = await getCommentsByProjectIdApi(params.id);
                 setComment(res.data);
             } catch (e) {
                 setError(e);
@@ -101,7 +106,7 @@ export const ProjectInfo = ({ project }) => {
 
                 <LoadingOverlay visible={loading} />
                 {comments.map(
-                    (comment) => <Comment key={comment.id} comment={comment} />)
+                    (comment) => <Comment key={comment.id} comment={comment} onCommentDelete={onCommentDelete} />)
                 }
 
                 <AddCommentForm onCommentSubmit={onCommentSubmit}/>

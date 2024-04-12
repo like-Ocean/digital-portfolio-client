@@ -1,13 +1,26 @@
-import { ActionIcon, Avatar, Card, Flex, Text } from '@mantine/core';
+import {ActionIcon, Avatar, Card, Flex, LoadingOverlay, Text} from '@mantine/core';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { IconTrash } from '@tabler/icons-react';
 import {useSelector} from "react-redux";
+import {useState} from "react";
+import {deleteCommentApi} from "../../../api/comments/delete-comment.js";
 
-export const Comment = ({ comment }) => {
+export const Comment = ({ comment, onCommentDelete }) => {
     const router = useNavigate();
     const userState = useSelector((state) => state.user.user);
-    console.log(userState)
+    const [loading, setLoading] = useState(false);
+
+    const onDelete = async () => {
+        setLoading(true);
+        try {
+            await deleteCommentApi(userState.id, comment.id);
+            onCommentDelete(comment.id)
+        } catch (e) {
+            console.log(e);
+        }
+        setLoading(false);
+    };
 
     return (
         <Card shadow="null" withBorder>
@@ -32,9 +45,10 @@ export const Comment = ({ comment }) => {
                     </Flex>
                 </Flex>
 
+                <LoadingOverlay visible={loading} />
                 {userState.id === comment.user.id && (
                     <Flex justify="space-between">
-                        <ActionIcon variant="filled" color="red" radius="xl" aria-label="delete">
+                        <ActionIcon onClick={onDelete} variant="filled" color="red" radius="xl" aria-label="delete">
                             <IconTrash />
                         </ActionIcon>
                     </Flex>
@@ -57,5 +71,7 @@ Comment.propTypes = {
             first_name: PropTypes.string,
             surname: PropTypes.string,
         }),
+
     }),
+    onCommentDelete: PropTypes.func
 };
