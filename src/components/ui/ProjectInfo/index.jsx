@@ -7,31 +7,30 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { getCommentsByProjectIdApi } from '../../../api/comments/get-comments-by-project-id.js';
 import { AddCommentForm } from '../../forms/AddCommentForm/index.jsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { commentActions } from '../../../store/reducers/comment-slice.js';
 
 export const ProjectInfo = ({ project }) => {
+    const dispatch = useDispatch();
+    const comments = useSelector((state) => state.comments.comments);
+
     const router = useNavigate();
     const [opened, { open, close }] = useDisclosure(false);
 
     const params = useParams();
-    const [comments, setComment] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState();
 
     const onCommentSubmit = (newComment) => {
-        setComment([...comments, newComment]);
+        dispatch(commentActions.addComment(newComment));
     };
-
-    const onCommentDelete = (id) => {
-        setComment((pref) => pref.filter((comment) => comment.id !== id))
-    }
-
 
     useEffect(() => {
         const fetch = async () => {
             setLoading(true);
             try {
-                const res = await getCommentsByProjectIdApi(params.id);
-                setComment(res.data);
+                const res = await getCommentsByProjectIdApi(params.id)
+                dispatch(commentActions.setComments(res.data));
             } catch (e) {
                 setError(e);
             }
@@ -39,7 +38,7 @@ export const ProjectInfo = ({ project }) => {
         };
 
         fetch();
-    }, [params.id]);
+    }, [params.id, dispatch]);
 
     return (
         <div style={{ position: 'relative' }}>
@@ -105,11 +104,11 @@ export const ProjectInfo = ({ project }) => {
                 </Text>
 
                 <LoadingOverlay visible={loading} />
-                {comments.map(
-                    (comment) => <Comment key={comment.id} comment={comment} onCommentDelete={onCommentDelete} />)
-                }
+                {comments.map((comment) => (
+                    <Comment key={comment.id} comment={comment} />
+                ))}
 
-                <AddCommentForm onCommentSubmit={onCommentSubmit}/>
+                <AddCommentForm onCommentSubmit={onCommentSubmit} />
             </Flex>
         </div>
     );

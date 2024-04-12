@@ -1,13 +1,17 @@
-import {ActionIcon, Avatar, Card, Flex, LoadingOverlay, Text} from '@mantine/core';
+import { ActionIcon, Avatar, Card, Flex, LoadingOverlay, Text } from '@mantine/core';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { IconTrash } from '@tabler/icons-react';
-import {useSelector} from "react-redux";
-import {useState} from "react";
-import {deleteCommentApi} from "../../../api/comments/delete-comment.js";
+import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { deleteCommentApi } from '../../../api/comments/delete-comment.js';
+import { commentActions } from '../../../store/reducers/comment-slice.js';
 
-export const Comment = ({ comment, onCommentDelete }) => {
+export const Comment = ({ comment }) => {
+    const dispatch = useDispatch();
+
     const router = useNavigate();
+
     const userState = useSelector((state) => state.user.user);
     const [loading, setLoading] = useState(false);
 
@@ -15,7 +19,7 @@ export const Comment = ({ comment, onCommentDelete }) => {
         setLoading(true);
         try {
             await deleteCommentApi(userState.id, comment.id);
-            onCommentDelete(comment.id)
+            dispatch(commentActions.removeComment(comment.id));
         } catch (e) {
             console.log(e);
         }
@@ -48,7 +52,13 @@ export const Comment = ({ comment, onCommentDelete }) => {
                 <LoadingOverlay visible={loading} />
                 {userState.id === comment.user.id && (
                     <Flex justify="space-between">
-                        <ActionIcon onClick={onDelete} variant="filled" color="red" radius="xl" aria-label="delete">
+                        <ActionIcon
+                            onClick={onDelete}
+                            variant="filled"
+                            color="red"
+                            radius="xl"
+                            aria-label="delete"
+                        >
                             <IconTrash />
                         </ActionIcon>
                     </Flex>
@@ -71,7 +81,6 @@ Comment.propTypes = {
             first_name: PropTypes.string,
             surname: PropTypes.string,
         }),
-
     }),
-    onCommentDelete: PropTypes.func
+    onCommentDelete: PropTypes.func,
 };

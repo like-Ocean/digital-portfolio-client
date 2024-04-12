@@ -6,6 +6,7 @@ import { sendCommentApi } from '../../../api/comments/send-comment.js';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import {requiredValidation} from "../../../constants/validation.js";
 
 export const AddCommentForm = ({ onCommentSubmit }) => {
     const {
@@ -36,7 +37,7 @@ export const AddCommentForm = ({ onCommentSubmit }) => {
                 <TextInput
                     placeholder="Добавить комментарий"
                     error={errors.comment?.message}
-                    {...register('comment')}
+                    {...register('comment', requiredValidation())}
                 />
                 <Button type="submit" loading={loading} variant="outline">
                     Отправить
