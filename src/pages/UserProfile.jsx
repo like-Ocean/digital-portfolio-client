@@ -33,7 +33,9 @@ export const UserProfile = () => {
                         <Tabs.List>
                             <Tabs.Tab value="projects">Проекты</Tabs.Tab>
                             <Tabs.Tab value="certificates">Сертификаты</Tabs.Tab>
-                            <Tabs.Tab value="privacy">Безопасность</Tabs.Tab>
+                            {userState.id.toString() === userId && (
+                                <Tabs.Tab value="privacy">Безопасность</Tabs.Tab>
+                            )}
                         </Tabs.List>
 
                         <Tabs.Panel value="projects">
@@ -42,12 +44,15 @@ export const UserProfile = () => {
 
                         <Tabs.Panel value="certificates">certificates tab content</Tabs.Panel>
 
-                        <Tabs.Panel value="privacy">
-                            privacy tab content
-                            <Button color="red" fullWidth mt="xs" radius="md">
-                                Удалить
-                            </Button>
-                        </Tabs.Panel>
+                        {userState.id.toString() === userId && (
+                            <Tabs.Panel value="privacy">
+                                privacy tab content
+                                <Button color="red" fullWidth mt="xs" radius="md">
+                                    Удалить
+                                </Button>
+                            </Tabs.Panel>
+                        )}
+
                     </Tabs>
                 </Grid.Col>
             </Grid>

@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react';
 import { getUserProjectsApi } from '../api/users/get-user-projects.js';
+import {useDispatch, useSelector} from "react-redux";
+import {projectActions} from "../store/reducers/project-slice.js";
 
 export const useProjectsByUser = (userId) => {
-    const [projects, setProjects] = useState([]);
+    const dispatch = useDispatch();
+
+    const projects = useSelector((state) => state.projects.projects)
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState();
 
@@ -12,7 +16,7 @@ export const useProjectsByUser = (userId) => {
 
             try {
                 const res = await getUserProjectsApi(userId);
-                setProjects(res.data);
+                dispatch(projectActions.setProjects(res.data));
             } catch (e) {
                 setError(e);
             }
@@ -21,7 +25,8 @@ export const useProjectsByUser = (userId) => {
         };
 
         fetch().then();
-    }, [userId]);
+
+    }, [userId, dispatch]);
 
     return [projects, loading, error];
 };
