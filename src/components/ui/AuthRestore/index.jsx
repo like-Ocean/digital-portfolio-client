@@ -20,7 +20,7 @@ export const AuthRestore = ({ children }) => {
             });
     }, [dispatch]);
 
-    return loading ? <FullscreenLoader/> : children;
+    return loading ? <FullscreenLoader /> : children;
 };
 
 AuthRestore.propTypes = {

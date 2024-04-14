@@ -48,9 +48,7 @@ export const UserInfo = ({ user }) => {
                 </Flex>
 
                 <Flex direction="column">
-                    <Badge color="blue">
-                        О себе:
-                    </Badge>
+                    <Badge color="blue">О себе:</Badge>
                     <Text size="sm">{user?.about}</Text>
                 </Flex>
             </Flex>

@@ -11,7 +11,7 @@ const EditUserForm = () => {
         handleSubmit,
         register,
         formState: { errors },
-    } = useForm({defaultValues: user});
+    } = useForm({ defaultValues: user });
 
     const dispatch = useDispatch();
     const onSubmit = async (data) => {
@@ -34,17 +34,9 @@ const EditUserForm = () => {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Flex direction="column" gap={10}>
-                <TextInput
-                    label="Логин"
-                    {...register('login')}
-                    error={errors.login?.message}
-                />
+                <TextInput label="Логин" {...register('login')} error={errors.login?.message} />
 
-                <TextInput
-                    label="Почта"
-                    {...register('email')}
-                    error={errors.email?.message}
-                />
+                <TextInput label="Почта" {...register('email')} error={errors.email?.message} />
 
                 <Flex gap={10}>
                     <TextInput
@@ -61,11 +53,7 @@ const EditUserForm = () => {
                         {...register('surname')}
                     />
                 </Flex>
-                <TextInput
-                    label="Телефон"
-                    error={errors.phone?.message}
-                    {...register('phone')}
-                />
+                <TextInput label="Телефон" error={errors.phone?.message} {...register('phone')} />
                 <Textarea
                     resize="vertical"
                     label="О себе"

@@ -21,14 +21,14 @@ export const UserProfile = () => {
     return (
         <Layout>
             <Grid>
-                <Grid.Col span={3}>
+                <Grid.Col span={{ base: 18, md: 3, lg: 3 }}>
                     <Box pos="relative">
                         <LoadingOverlay visible={userLoading} />
                         <UserInfo user={userState.id === +userId ? userState : user} />
                     </Box>
                 </Grid.Col>
 
-                <Grid.Col span={9}>
+                <Grid.Col span={{ base: 18, md: 9, lg: 9 }}>
                     <Tabs radius="xs" defaultValue="projects">
                         <Tabs.List>
                             <Tabs.Tab value="projects">Проекты</Tabs.Tab>
@@ -52,7 +52,6 @@ export const UserProfile = () => {
                                 </Button>
                             </Tabs.Panel>
                         )}
-
                     </Tabs>
                 </Grid.Col>
             </Grid>

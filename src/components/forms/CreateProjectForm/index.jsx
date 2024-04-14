@@ -1,16 +1,34 @@
-import { Button, FileInput, Flex, LoadingOverlay, NativeSelect, Textarea, TextInput } from '@mantine/core';
+import {
+    Button,
+    FileInput,
+    Flex,
+    LoadingOverlay,
+    NativeSelect,
+    Textarea,
+    TextInput,
+} from '@mantine/core';
 import { requiredValidation } from '../../../constants/validation.js';
-import {Controller, useForm} from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { createProjectApi } from '../../../api/projects/create-project.js';
-import { createProjectUploadFileApi } from '../../../api/projects/create-project-upload-file.js';
+import { projectUploadFileApi } from '../../../api/projects/create-project-upload-file.js';
 import { useCategories } from '../../../hooks/useCategories.js';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { projectActions } from '../../../store/reducers/project-slice.js';
 
 export const CreateProjectForm = () => {
+    const dispatch = useDispatch();
+
     const { categories, loading } = useCategories();
     const [isLoading, setLoading] = useState(false);
-    const { handleSubmit, register, formState: { errors }, reset, control } = useForm();
+
+    const {
+        handleSubmit,
+        register,
+        formState: { errors },
+        reset,
+        control,
+    } = useForm();
     const userState = useSelector((state) => state.user.user);
 
     const onSubmit = async (data) => {
@@ -20,20 +38,22 @@ export const CreateProjectForm = () => {
                 userState.id,
                 data.name,
                 data.description,
-                data.category
+                data.category,
             );
 
             const projectId = projectResponse.data.id;
-            const filesArray = Array.from(data.files)
+
+            const filesArray = Array.from(data.files);
             const formData = new FormData();
 
             filesArray.forEach((file) => {
                 formData.append('files', file);
-                console.log(file)
             });
             formData.append('project_id', projectId);
 
-            await createProjectUploadFileApi(formData);
+            const res = await projectUploadFileApi(formData);
+            dispatch(projectActions.createProject(res.data));
+
             reset();
         } catch (e) {
             console.log(e);
@@ -70,6 +90,7 @@ export const CreateProjectForm = () => {
                     name="files"
                     control={control}
                     defaultValue={[]}
+                    rules={{ required: 'Необходимо выбрать файл' }}
                     render={({ field: { onChange, value, ...field } }) => (
                         <FileInput
                             {...field}
@@ -77,6 +98,7 @@ export const CreateProjectForm = () => {
                             placeholder="Выберите файлы"
                             multiple
                             accept="image/*"
+                            error={errors.files?.message}
                             value={value}
                             onChange={(files) => {
                                 onChange(files);

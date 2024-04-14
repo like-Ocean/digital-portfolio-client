@@ -1,5 +1,5 @@
-import {api} from "../index.js";
+import { api } from '../index.js';
 
 export const checkAuth = () => {
-    return api.get("/users/auth/check")
-}
+    return api.get('/users/auth/check');
+};

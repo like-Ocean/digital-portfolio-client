@@ -19,13 +19,13 @@ export const userSlice = createSlice({
     reducers: {
         login: (state, action) => {
             state.isAuth = true;
-            state.user = action.payload
+            state.user = action.payload;
         },
         logout: () => initialState,
         // добавляется, новая типа "функция" для обновления состояния
         updateUser: (state, action) => {
             state.user = { ...state.user, ...action.payload };
-        }
+        },
     },
 });
 

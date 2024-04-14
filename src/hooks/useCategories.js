@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import {getCategoriesApi} from "../api/categories/get-categories.js";
-
+import { getCategoriesApi } from '../api/categories/get-categories.js';
 
 export const useCategories = () => {
     const [loading, setLoading] = useState(false);
@@ -22,7 +21,7 @@ export const useCategories = () => {
             }
             setLoading(false);
         };
-        loadCategories();
+        void loadCategories();
     }, []);
 
     return { categories, loading };

@@ -11,7 +11,9 @@ import { projectActions } from '../store/reducers/project-slice.js';
 export const InnerProject = () => {
     const params = useParams();
     const dispatch = useDispatch();
-    const project = useSelector((state) => state.projects.projects.find((p) => p.id.toString() === params.id));
+    const project = useSelector((state) =>
+        state.projects.projects.find((p) => p.id.toString() === params.id),
+    );
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState();
@@ -37,7 +39,7 @@ export const InnerProject = () => {
                     <Grid>
                         <Grid.Col span={{ base: 12, md: 12, lg: 6 }}>
                             <LoadingOverlay visible={loading} />
-                            {project && <ProjectImgs files={project.files} />}
+                            {project && <ProjectImgs files={project.files} removable={false} />}
                         </Grid.Col>
 
                         <Grid.Col span={{ base: 12, md: 12, lg: 6 }}>

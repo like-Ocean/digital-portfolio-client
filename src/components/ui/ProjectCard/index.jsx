@@ -1,10 +1,10 @@
 import { Card, Grid, Image, Text } from '@mantine/core';
 import PropTypes from 'prop-types';
 import { getFile } from '../../../api/file/get-file.js';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 export const ProjectCard = ({ project }) => {
-    const router = useNavigate()
+    const router = useNavigate();
 
     return (
         <Grid.Col span={4}>
@@ -12,11 +12,15 @@ export const ProjectCard = ({ project }) => {
                 onClick={() => router(`/project/${project.id}`)}
                 withBorder
                 padding="xs"
-                style={{cursor: "pointer"}}
+                style={{ cursor: 'pointer' }}
             >
                 <Card.Section>
                     <Image
-                        src={project.files[0] ? getFile(project.files[0].file_id) : "/src/assets/9214833.jpg"}
+                        src={
+                            project.files[0]
+                                ? getFile(project.files[0].file_id)
+                                : '/src/assets/9214833.jpg'
+                        }
                         h={200}
                         style={{ objectFit: 'cover' }}
                     />
@@ -38,6 +42,6 @@ ProjectCard.propTypes = {
             }),
         ),
         name: PropTypes.string,
-        id: PropTypes.number
+        id: PropTypes.number,
     }),
 };

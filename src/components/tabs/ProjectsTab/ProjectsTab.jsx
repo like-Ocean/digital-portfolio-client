@@ -4,8 +4,8 @@ import { ProjectCard } from '../../ui/ProjectCard/index.jsx';
 import { useDisclosure } from '@mantine/hooks';
 import { useParams } from 'react-router-dom';
 import { useProjectsByUser } from '../../../hooks/useProjectsByUser.js';
-import {useSelector} from "react-redux";
-import {CreateProjectForm} from "../../forms/CreateProjectForm/index.jsx";
+import { useSelector } from 'react-redux';
+import { CreateProjectForm } from '../../forms/CreateProjectForm/index.jsx';
 
 export const ProjectsTab = () => {
     const { userId } = useParams();
@@ -43,7 +43,7 @@ export const ProjectsTab = () => {
                             </Text>
                         </Card>
                         <Modal opened={opened} onClose={close} title="Создание проекта">
-                            <CreateProjectForm/>
+                            <CreateProjectForm />
                         </Modal>
                     </Grid.Col>
                 )}

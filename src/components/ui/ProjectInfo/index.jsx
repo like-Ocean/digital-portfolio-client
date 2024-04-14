@@ -4,41 +4,27 @@ import { IconEdit } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { getCommentsByProjectIdApi } from '../../../api/comments/get-comments-by-project-id.js';
 import { AddCommentForm } from '../../forms/AddCommentForm/index.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { commentActions } from '../../../store/reducers/comment-slice.js';
+import { EditProjectForm } from '../../forms/EditProjectForm/index.jsx';
+import { useCommentsByProjectId } from '../../../hooks/useCommentsByProjectId.js';
 
 export const ProjectInfo = ({ project }) => {
     const dispatch = useDispatch();
     const comments = useSelector((state) => state.comments.comments);
+    const userState = useSelector((state) => state.user.user);
 
     const router = useNavigate();
     const [opened, { open, close }] = useDisclosure(false);
 
     const params = useParams();
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState();
 
     const onCommentSubmit = (newComment) => {
         dispatch(commentActions.addComment(newComment));
     };
 
-    useEffect(() => {
-        const fetch = async () => {
-            setLoading(true);
-            try {
-                const res = await getCommentsByProjectIdApi(params.id)
-                dispatch(commentActions.setComments(res.data));
-            } catch (e) {
-                setError(e);
-            }
-            setLoading(false);
-        };
-
-        fetch();
-    }, [params.id, dispatch]);
+    const { loading, error } = useCommentsByProjectId(params.id);
 
     return (
         <div style={{ position: 'relative' }}>
@@ -51,18 +37,20 @@ export const ProjectInfo = ({ project }) => {
                         {project.creation_date}
                     </Text>
                 </Flex>
-                <ActionIcon
-                    variant="filled"
-                    size="lg"
-                    radius="xl"
-                    aria-label="Settings"
-                    style={{ position: 'absolute', right: 0 }}
-                    onClick={open}
-                >
-                    <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
-                </ActionIcon>
-                <Modal opened={opened} onClose={close} title="Редактировать">
-                    изменить инфу проекта и удалить проект
+                {userState.id === project.user.id && (
+                    <ActionIcon
+                        variant="filled"
+                        size="lg"
+                        radius="xl"
+                        aria-label="Settings"
+                        style={{ position: 'absolute', right: 0 }}
+                        onClick={open}
+                    >
+                        <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
+                    </ActionIcon>
+                )}
+                <Modal opened={opened} onClose={close} title="Редактировать" size={800}>
+                    <EditProjectForm />
                 </Modal>
             </Flex>
             <Flex mih={50} mb={20} justify="flex-start" align="center" direction="row" gap="sm">

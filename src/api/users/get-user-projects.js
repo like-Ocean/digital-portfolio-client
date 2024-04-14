@@ -1,5 +1,5 @@
-import {api} from "../index.js";
+import { api } from '../index.js';
 
 export const getUserProjectsApi = (user) => {
-    return api.get(`/projects/user/${user}`)
-}
+    return api.get(`/projects/user/${user}`);
+};

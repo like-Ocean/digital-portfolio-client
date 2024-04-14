@@ -1,5 +1,5 @@
-import {apiUrl} from "../index.js";
+import { apiUrl } from '../index.js';
 
-export const getFile = (file_id) =>{
+export const getFile = (file_id) => {
     return `${apiUrl}/files/file/${file_id}`;
-}
+};

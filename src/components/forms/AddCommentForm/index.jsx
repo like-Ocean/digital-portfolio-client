@@ -6,7 +6,7 @@ import { sendCommentApi } from '../../../api/comments/send-comment.js';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import {requiredValidation} from "../../../constants/validation.js";
+import { requiredValidation } from '../../../constants/validation.js';
 
 export const AddCommentForm = ({ onCommentSubmit }) => {
     const {

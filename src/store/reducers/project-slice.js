@@ -16,11 +16,11 @@ export const projectSlice = createSlice({
             state.projects.push(action.payload);
         },
         updateProject: (state, action) => {
-            const index = state.projects.findIndex(project => project.id === action.payload.id);
+            const index = state.projects.findIndex((project) => project.id === action.payload.id);
             if (index !== -1) {
                 state.projects[index] = action.payload;
             }
-        }
+        },
     },
 });
 
