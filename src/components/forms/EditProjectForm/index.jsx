@@ -17,9 +17,11 @@ import { projectActions } from '../../../store/reducers/project-slice.js';
 import { useNavigate, useParams } from 'react-router-dom';
 import { deleteProjectApi } from '../../../api/projects/delete-project.js';
 import { projectUploadFileApi } from '../../../api/projects/create-project-upload-file.js';
+import { useState } from 'react';
 
 export const EditProjectForm = () => {
     const navigate = useNavigate();
+    const [onSendLoading, setLoading] = useState(false);
 
     const params = useParams();
     const user = useSelector((state) => state.user.user);
@@ -29,19 +31,14 @@ export const EditProjectForm = () => {
     const project = useSelector((state) => state.projects.projects);
     const dispatch = useDispatch();
 
-    const {
-        handleSubmit,
-        register,
-        formState: { errors },
-        control,
-    } = useForm({
+    const { handleSubmit, register, control } = useForm({
         defaultValues: {
             name: project[0].name,
             description: project[0].description,
         },
     });
     const onSubmit = async (data) => {
-        // TODO: Доделать функцию
+        setLoading(true);
         try {
             const res = await editProjectInfoApi(
                 project[0].id,
@@ -50,18 +47,25 @@ export const EditProjectForm = () => {
                 data.category,
             );
 
-            dispatch(projectActions.updateProject(res.data));
+            let updatedProject = { ...res.data };
 
             const filesArray = Array.from(data.files);
-            const formData = new FormData();
+            if (filesArray.length > 0) {
+                const formData = new FormData();
+                filesArray.forEach((file) => {
+                    formData.append('files', file);
+                });
+                formData.append('project_id', project[0].id);
+                const file_res = await projectUploadFileApi(formData);
 
-            filesArray.forEach((file) => {
-                formData.append('files', file);
-            });
-            formData.append('project_id', project[0].id);
+                updatedProject = {
+                    ...updatedProject,
+                    files: [...updatedProject.files, ...file_res.data.files],
+                };
+            }
 
-            const file_res = await projectUploadFileApi(formData);
-            dispatch(projectActions.updateProject(file_res.data));
+            dispatch(projectActions.updateProject(updatedProject));
+            setLoading(false);
         } catch (e) {
             console.log(e);
         }
@@ -78,6 +82,7 @@ export const EditProjectForm = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
+            <LoadingOverlay visible={onSendLoading} />
             <Grid>
                 <Grid.Col span={6}>
                     <ProjectImgs files={project[0].files} removable={true} />
@@ -116,7 +121,13 @@ export const EditProjectForm = () => {
                                 />
                             )}
                         />
-                        <Button type="submit" color="blue" fullWidth radius="md">
+                        <Button
+                            type="submit"
+                            loading={onSendLoading}
+                            color="blue"
+                            fullWidth
+                            radius="md"
+                        >
                             Сохранить
                         </Button>
 

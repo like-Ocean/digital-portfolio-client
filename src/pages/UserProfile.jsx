@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useUserById } from '../hooks/useUserById.js';
 import { ProjectsTab } from '../components/tabs/ProjectsTab/ProjectsTab.jsx';
 import { useSelector } from 'react-redux';
+import { CertificatesTab } from '../components/tabs/CertificatesTab/CertificatesTab.jsx';
 
 export const UserProfile = () => {
     const navigate = useNavigate();
@@ -42,7 +43,9 @@ export const UserProfile = () => {
                             <ProjectsTab />
                         </Tabs.Panel>
 
-                        <Tabs.Panel value="certificates">certificates tab content</Tabs.Panel>
+                        <Tabs.Panel value="certificates">
+                            <CertificatesTab />
+                        </Tabs.Panel>
 
                         {userState.id.toString() === userId && (
                             <Tabs.Panel value="privacy">

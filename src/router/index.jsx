@@ -6,6 +6,7 @@ import { AuthRequired } from './AuthRequired.jsx';
 import { UserProfile } from '../pages/UserProfile.jsx';
 import { Home } from '../pages/Home.jsx';
 import { InnerProject } from '../pages/InnerProject.jsx';
+import { InnerCertificate } from '../pages/InnerCertificate.jsx';
 
 export const router = createBrowserRouter([
     {
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
     {
         path: '/project/:id',
         element: <InnerProject />,
+    },
+    {
+        path: '/certificate/:id',
+        element: <InnerCertificate />,
     },
 
     {
