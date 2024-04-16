@@ -25,7 +25,7 @@ export const AddCertificateForm = () => {
         setLoading(true);
         try {
             const formData = new FormData();
-            formData.append('file', data.files[0]);
+            formData.append('file', data.files);
             const file = await certificateUploadFileApi(formData);
 
             const res = await addCertificateApi(
@@ -50,7 +50,7 @@ export const AddCertificateForm = () => {
             <Flex direction="column" gap={10}>
                 <TextInput
                     // required="true"
-                    label="Название"
+                    label="Название документа"
                     error={errors.name?.message}
                     {...register('name', requiredValidation())}
                 />
@@ -59,7 +59,6 @@ export const AddCertificateForm = () => {
 
                 <TextInput label="Ссылка" {...register('link')} />
 
-                {/*какой то прикол со свойством multiple*/}
                 <Controller
                     name="files"
                     control={control}
@@ -68,9 +67,8 @@ export const AddCertificateForm = () => {
                     render={({ field: { onChange, value, ...field } }) => (
                         <FileInput
                             {...field}
-                            label="Изображения"
+                            label="Выберите файл"
                             placeholder="Выберите файлы"
-                            multiple
                             accept="document/*"
                             error={errors.files?.message}
                             value={value}
