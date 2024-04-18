@@ -1,5 +1,30 @@
 import { Layout } from '../components/ui/Layout/index.jsx';
+import { Autocomplete, Flex, Grid, LoadingOverlay, NativeSelect, rem } from '@mantine/core';
+import { IconSearch } from '@tabler/icons-react';
+import { useProjects } from '../hooks/useProjects.js';
+import { ProjectCard } from '../components/ui/ProjectCard/index.jsx';
 
 export const Home = () => {
-    return <Layout>Home page</Layout>;
+    const [projects, projectsLoading] = useProjects();
+
+    return (
+        <Layout>
+            <Flex gap="md" align="center" justify="flex-end" direction="row" wrap="wrap">
+                <Autocomplete
+                    leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} />}
+                    placeholder="Поиск"
+                    data={['React', 'Angular', 'Vue', 'Svelte']}
+                />
+                <NativeSelect data={['Категория 1', 'Категория 2', 'Категория 3']} />
+                <NativeSelect data={['По рейтингу', 'По дате']} />
+            </Flex>
+
+            <LoadingOverlay visible={projectsLoading} />
+            <Grid mt={12}>
+                {projects.map((project) => (
+                    <ProjectCard key={project.id} project={project} />
+                ))}
+            </Grid>
+        </Layout>
+    );
 };

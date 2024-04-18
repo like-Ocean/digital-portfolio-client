@@ -19,7 +19,7 @@ export const CertificatesTab = () => {
         <Box pos="relative">
             <LoadingOverlay visible={certificatesLoading} />
             <Grid mt={10}>
-                {userState.id === userId && (
+                {userState.id === +userId && (
                     <Grid.Col span={4}>
                         <Card withBorder padding="xs" style={{ cursor: 'pointer' }} onClick={open}>
                             <Card.Section
