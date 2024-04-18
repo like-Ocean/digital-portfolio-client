@@ -22,7 +22,6 @@ export const userSlice = createSlice({
             state.user = action.payload;
         },
         logout: () => initialState,
-        // добавляется, новая типа "функция" для обновления состояния
         updateUser: (state, action) => {
             state.user = { ...state.user, ...action.payload };
         },

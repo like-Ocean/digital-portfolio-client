@@ -23,7 +23,7 @@ const AuthorizationForm = () => {
         try {
             const res = await authorizationApi(data.login, data.password);
             dispatch(userActions.login(res.data));
-            navigate('/some');
+            navigate('/');
         } catch (e) {
             console.log(e);
         }
@@ -41,7 +41,7 @@ const AuthorizationForm = () => {
 
                 <PasswordInput
                     label="Пароль"
-                    error={errors.login?.message}
+                    error={errors.password?.message}
                     leftSection={<IconKey style={{ width: rem(16), height: rem(16) }} />}
                     {...register('password', passwordValidation())}
                 />

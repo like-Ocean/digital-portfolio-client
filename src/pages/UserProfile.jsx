@@ -1,5 +1,5 @@
 import { Layout } from '../components/ui/Layout/index.jsx';
-import { Grid, Tabs, Button, LoadingOverlay, Box } from '@mantine/core';
+import { Grid, Tabs, LoadingOverlay, Box } from '@mantine/core';
 import { UserInfo } from '../components/ui/UserInfo/index.jsx';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { useUserById } from '../hooks/useUserById.js';
 import { ProjectsTab } from '../components/tabs/ProjectsTab/ProjectsTab.jsx';
 import { useSelector } from 'react-redux';
 import { CertificatesTab } from '../components/tabs/CertificatesTab/CertificatesTab.jsx';
+import { PrivacyTab } from '../components/tabs/PrivacyTab/index.jsx';
 
 export const UserProfile = () => {
     const navigate = useNavigate();
@@ -34,7 +35,7 @@ export const UserProfile = () => {
                         <Tabs.List>
                             <Tabs.Tab value="projects">Проекты</Tabs.Tab>
                             <Tabs.Tab value="certificates">Сертификаты</Tabs.Tab>
-                            {userState.id.toString() === userId && (
+                            {userState.id === +userId && (
                                 <Tabs.Tab value="privacy">Безопасность</Tabs.Tab>
                             )}
                         </Tabs.List>
@@ -47,12 +48,9 @@ export const UserProfile = () => {
                             <CertificatesTab />
                         </Tabs.Panel>
 
-                        {userState.id.toString() === userId && (
+                        {userState.id === +userId && (
                             <Tabs.Panel value="privacy">
-                                privacy tab content
-                                <Button color="red" fullWidth mt="xs" radius="md">
-                                    Удалить
-                                </Button>
+                                <PrivacyTab />
                             </Tabs.Panel>
                         )}
                     </Tabs>

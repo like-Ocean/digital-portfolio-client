@@ -95,8 +95,7 @@ export const ProjectInfo = ({ project }) => {
                 {comments.map((comment) => (
                     <Comment key={comment.id} comment={comment} />
                 ))}
-
-                <AddCommentForm onCommentSubmit={onCommentSubmit} />
+                {userState.id && <AddCommentForm onCommentSubmit={onCommentSubmit} />}
             </Flex>
         </div>
     );
