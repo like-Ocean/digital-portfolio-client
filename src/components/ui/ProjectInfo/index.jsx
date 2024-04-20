@@ -1,4 +1,4 @@
-import { ActionIcon, Avatar, Flex, LoadingOverlay, Modal, Rating, Text } from '@mantine/core';
+import { ActionIcon, Avatar, Flex, LoadingOverlay, Modal, Text } from '@mantine/core';
 import { Comment } from '../Comment/index.jsx';
 import { IconEdit } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { commentActions } from '../../../store/reducers/comment-slice.js';
 import { EditProjectForm } from '../../forms/EditProjectForm/index.jsx';
 import { useCommentsByProjectId } from '../../../hooks/useCommentsByProjectId.js';
+import { AddRatingForm } from '../../forms/AddRatingForm/index.jsx';
 
 export const ProjectInfo = ({ project }) => {
     const dispatch = useDispatch();
@@ -84,7 +85,7 @@ export const ProjectInfo = ({ project }) => {
                     <Text size="md" fw={500}>
                         Оценки:
                     </Text>
-                    <Rating fractions={2} defaultValue={1.5} /> 3.9
+                    <AddRatingForm />
                 </Flex>
 
                 <Text size="md" fw={500}>

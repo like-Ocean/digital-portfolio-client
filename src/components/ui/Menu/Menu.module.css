@@ -13,3 +13,11 @@ button.control a {
     color: inherit;
     text-decoration: none;
 }
+
+button.control.logout {
+    color: var(--mantine-color-red-6);
+}
+
+button.control.logout:hover {
+    background-color: var(--mantine-color-red-1);
+}

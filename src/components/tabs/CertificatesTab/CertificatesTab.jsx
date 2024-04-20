@@ -48,7 +48,9 @@ export const CertificatesTab = () => {
                     </Grid.Col>
                 )}
                 {certificates.map((certificate) => (
-                    <CertificateCard key={certificate.id} certificate={certificate} />
+                    <Grid.Col key={certificate.id} span={4}>
+                        <CertificateCard certificate={certificate} />
+                    </Grid.Col>
                 ))}
             </Grid>
         </Box>

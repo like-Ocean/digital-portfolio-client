@@ -31,7 +31,10 @@ export const Menu = () => {
                         <Link to={`/profile/${user.id}`}>Профиль</Link>
                     </UnstyledButton>
 
-                    <UnstyledButton onClick={onLogout} className={style.control} color="red">
+                    <UnstyledButton
+                        onClick={onLogout}
+                        className={`${style.control} ${style.logout}`}
+                    >
                         <Link to={`/`}>Выход</Link>
                     </UnstyledButton>
                 </>

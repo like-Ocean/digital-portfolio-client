@@ -22,7 +22,9 @@ export const Home = () => {
             <LoadingOverlay visible={projectsLoading} />
             <Grid mt={12}>
                 {projects.map((project) => (
-                    <ProjectCard key={project.id} project={project} />
+                    <Grid.Col key={project.id} span={{ base: 12, md: 3, lg: 3 }}>
+                        <ProjectCard project={project} />
+                    </Grid.Col>
                 ))}
             </Grid>
         </Layout>

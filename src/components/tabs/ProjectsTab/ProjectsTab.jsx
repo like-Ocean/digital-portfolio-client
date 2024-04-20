@@ -48,7 +48,9 @@ export const ProjectsTab = () => {
                     </Grid.Col>
                 )}
                 {projects.map((project) => (
-                    <ProjectCard key={project.id} project={project} />
+                    <Grid.Col key={project.id} span={4}>
+                        <ProjectCard project={project} />
+                    </Grid.Col>
                 ))}
             </Grid>
         </Box>
