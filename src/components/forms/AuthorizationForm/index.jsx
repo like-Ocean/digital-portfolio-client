@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { userActions } from '../../../store/reducers/user-slice.js';
 import { IconKey, IconUser } from '@tabler/icons-react';
+import { notifications } from '@mantine/notifications';
 
 const AuthorizationForm = () => {
     const dispatch = useDispatch();
@@ -25,8 +26,12 @@ const AuthorizationForm = () => {
             dispatch(userActions.login(res.data));
             navigate('/');
         } catch (e) {
-            console.log(e);
+            notifications.show({
+                title: e.response.data.detail,
+                color: 'red',
+            });
         }
+        setLoading(false);
     };
 
     return (

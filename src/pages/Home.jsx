@@ -9,7 +9,6 @@ import { getProjectsByCategoryIdApi } from '../api/projects/get-projects-by-cate
 
 export const Home = () => {
     const [projects, projectsLoading] = useProjects();
-    console.log(projects);
     const { categories, categoriesLoading } = useCategories();
 
     const [selectedCategory, setSelectedCategory] = useState(null);

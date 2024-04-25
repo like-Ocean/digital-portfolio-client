@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { editUserApi } from '../../../api/users/edit-user.js';
 import { userActions } from '../../../store/reducers/user-slice.js';
+import { notifications } from '@mantine/notifications';
 
 const EditUserForm = () => {
     const user = useSelector((state) => state.user.user);
@@ -27,7 +28,10 @@ const EditUserForm = () => {
             );
             dispatch(userActions.updateUser(res.data));
         } catch (e) {
-            console.log(e);
+            notifications.show({
+                title: e.response.data.detail,
+                color: 'red',
+            });
         }
     };
 

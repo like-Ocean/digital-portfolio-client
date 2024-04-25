@@ -8,6 +8,7 @@ import {
 import { useState } from 'react';
 import { registrationApi } from '../../../api/users/registration.js';
 import { useNavigate } from 'react-router-dom';
+import { notifications } from '@mantine/notifications';
 
 const RegistrationForm = () => {
     const navigate = useNavigate();
@@ -30,9 +31,12 @@ const RegistrationForm = () => {
                 data.surname,
                 data.password,
             );
-            navigate('/login');
+            navigate('/authorization');
         } catch (e) {
-            console.log(e);
+            notifications.show({
+                title: e.response.data.detail,
+                color: 'red',
+            });
         }
         setLoading(false);
     };

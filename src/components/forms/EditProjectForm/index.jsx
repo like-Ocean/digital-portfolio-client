@@ -18,6 +18,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { deleteProjectApi } from '../../../api/projects/delete-project.js';
 import { projectUploadFileApi } from '../../../api/projects/create-project-upload-file.js';
 import { useState } from 'react';
+import { notifications } from '@mantine/notifications';
 
 export const EditProjectForm = () => {
     const navigate = useNavigate();
@@ -67,7 +68,10 @@ export const EditProjectForm = () => {
             dispatch(projectActions.updateProject(updatedProject));
             setLoading(false);
         } catch (e) {
-            console.log(e);
+            notifications.show({
+                title: e.response.data.detail,
+                color: 'red',
+            });
         }
     };
 

@@ -8,8 +8,8 @@ import { IconKey } from '@tabler/icons-react';
 import { editPasswordApi } from '../../../api/users/edit-password.js';
 import { deleteAccountApi } from '../../../api/users/delete-account.js';
 import { userActions } from '../../../store/reducers/user-slice.js';
+import { notifications } from '@mantine/notifications';
 
-// Не тестил
 export const EditUserPasswordAndDeleteAccountForm = () => {
     const navigate = useNavigate();
     const [onSendLoading, setLoading] = useState(false);
@@ -30,7 +30,10 @@ export const EditUserPasswordAndDeleteAccountForm = () => {
             await editPasswordApi(user.id, data.password);
             reset();
         } catch (e) {
-            console.log(e);
+            notifications.show({
+                title: e.response.data.detail,
+                color: 'red',
+            });
         }
         setLoading(false);
     };

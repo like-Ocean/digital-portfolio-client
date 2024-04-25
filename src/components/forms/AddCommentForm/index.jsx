@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { requiredValidation } from '../../../constants/validation.js';
+import { notifications } from '@mantine/notifications';
 
 export const AddCommentForm = ({ onCommentSubmit }) => {
     const {
@@ -26,7 +27,10 @@ export const AddCommentForm = ({ onCommentSubmit }) => {
             onCommentSubmit(res.data);
             reset();
         } catch (e) {
-            console.log(e);
+            notifications.show({
+                title: e.response.data.detail,
+                color: 'red',
+            });
         }
         setLoading(false);
     };

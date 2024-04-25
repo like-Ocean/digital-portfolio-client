@@ -15,6 +15,7 @@ import { useCategories } from '../../../hooks/useCategories.js';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { projectActions } from '../../../store/reducers/project-slice.js';
+import { notifications } from '@mantine/notifications';
 
 export const CreateProjectForm = () => {
     const dispatch = useDispatch();
@@ -56,7 +57,10 @@ export const CreateProjectForm = () => {
 
             reset();
         } catch (e) {
-            console.log(e);
+            notifications.show({
+                title: e.response.data.detail,
+                color: 'red',
+            });
         }
         setLoading(false);
     };

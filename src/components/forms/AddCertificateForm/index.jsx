@@ -6,6 +6,7 @@ import { addCertificateApi } from '../../../api/certificates/add-certificate.js'
 import { useDispatch, useSelector } from 'react-redux';
 import { certificateActions } from '../../../store/reducers/certificate-slice.js';
 import { certificateUploadFileApi } from '../../../api/certificates/certificate-upload-file.js';
+import { notifications } from '@mantine/notifications';
 
 export const AddCertificateForm = () => {
     const dispatch = useDispatch();
@@ -39,7 +40,10 @@ export const AddCertificateForm = () => {
 
             reset();
         } catch (e) {
-            console.log(e);
+            notifications.show({
+                title: e.response.data.detail,
+                color: 'red',
+            });
         }
         setLoading(false);
     };
@@ -49,7 +53,6 @@ export const AddCertificateForm = () => {
             <LoadingOverlay visible={loading} />
             <Flex direction="column" gap={10}>
                 <TextInput
-                    // required="true"
                     label="Название документа"
                     error={errors.name?.message}
                     {...register('name', requiredValidation())}
@@ -69,7 +72,7 @@ export const AddCertificateForm = () => {
                             {...field}
                             label="Выберите файл"
                             placeholder="Выберите файлы"
-                            accept="document/*"
+                            accept="application/pdf"
                             error={errors.files?.message}
                             value={value}
                             onChange={(files) => {

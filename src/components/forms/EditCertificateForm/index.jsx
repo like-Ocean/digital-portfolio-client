@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { deleteCertificateApi } from '../../../api/certificates/delete-certificate.js';
 import { certificateActions } from '../../../store/reducers/certificate-slice.js';
 import { editCertificateApi } from '../../../api/certificates/edit-certificate.js';
+import { notifications } from '@mantine/notifications';
 
 export const EditCertificateForm = () => {
     const navigate = useNavigate();
@@ -34,7 +35,10 @@ export const EditCertificateForm = () => {
             );
             dispatch(certificateActions.updateCertificate(res.data));
         } catch (e) {
-            console.log(e);
+            notifications.show({
+                title: e.response.data.detail,
+                color: 'red',
+            });
         }
         setLoading(false);
     };
