@@ -5,28 +5,22 @@ import { ratingActions } from '../../../store/reducers/rating-slice.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getRatingByProjectIdApi } from '../../../api/ratings/get-rating-by-project-id.js';
+import PropTypes from 'prop-types';
+import { getProjectByIdApi } from '../../../api/projects/get-project-by-id.js';
 
-// Полная хуйня, надо переделывать
-export const AddRatingForm = () => {
+export const AddRatingForm = ({ averageRating }) => {
     const params = useParams();
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
     const userState = useSelector((state) => state.user.user);
 
-    const [averageRating, setAverageRating] = useState(0);
     const [userRating, setUserRating] = useState(null);
     const [hasRated, setHasRated] = useState(false);
+    const [newRating, setNewRating] = useState(averageRating);
+
     useEffect(() => {
         getRatingByProjectIdApi(params.id)
             .then((response) => {
-                console.log(response.data);
-                const totalRating = response.data.reduce(
-                    (total, rating) => total + rating.grade,
-                    0,
-                );
-                const averageRating = parseFloat((totalRating / response.data.length).toFixed(1));
-                setAverageRating(averageRating);
-
                 const currentUserRating = response.data.find(
                     (rating) => rating.user.id === userState.id,
                 );
@@ -38,18 +32,19 @@ export const AddRatingForm = () => {
             .catch((error) => {
                 console.error(error);
             });
-    }, [params.id]);
+    }, [params.id, userState.id]);
 
     const onSubmit = async (newRating) => {
+        event.preventDefault();
         setLoading(true);
         try {
             const res = await addRatingApi(userState.id, params.id, newRating);
             dispatch(ratingActions.addRating(res.data));
 
-            const response = await getRatingByProjectIdApi(params.id);
-            const totalRating = response.data.reduce((total, rating) => total + rating.grade, 0);
-            const newAverageRating = parseFloat((totalRating / response.data.length).toFixed(1));
-            setAverageRating(newAverageRating);
+            const updatedProject = await getProjectByIdApi(params.id);
+            setNewRating(updatedProject.data.average_grade);
+            setUserRating(newRating);
+            setHasRated(true);
         } catch (e) {
             console.log(e);
         }
@@ -61,10 +56,14 @@ export const AddRatingForm = () => {
             <Rating
                 fractions={2}
                 value={userRating ? userRating : 0}
-                readOnly={hasRated}
+                readOnly={!userState || hasRated}
                 onChange={onSubmit}
             />{' '}
-            {averageRating > 0 && averageRating}
+            {newRating > 0 && newRating.toFixed(1)}
         </>
     );
+};
+
+AddRatingForm.propTypes = {
+    averageRating: PropTypes.number,
 };

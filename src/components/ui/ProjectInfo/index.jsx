@@ -85,7 +85,7 @@ export const ProjectInfo = ({ project }) => {
                     <Text size="md" fw={500}>
                         Оценки:
                     </Text>
-                    <AddRatingForm />
+                    {project && <AddRatingForm averageRating={project.average_grade} />}
                 </Flex>
 
                 <Text size="md" fw={500}>
@@ -123,5 +123,6 @@ ProjectInfo.propTypes = {
                 file_id: PropTypes.string,
             }),
         ),
+        average_grade: PropTypes.number,
     }),
 };

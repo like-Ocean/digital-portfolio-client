@@ -1,11 +1,11 @@
 import { Layout } from '../components/ui/Layout/index.jsx';
-import { Autocomplete, Flex, Grid, LoadingOverlay, NativeSelect, rem } from '@mantine/core';
-import { IconSearch, IconEraser } from '@tabler/icons-react';
+import { Flex, Grid, LoadingOverlay } from '@mantine/core';
 import { useProjects } from '../hooks/useProjects.js';
 import { ProjectCard } from '../components/ui/ProjectCard/index.jsx';
 import { useEffect, useState } from 'react';
 import { useCategories } from '../hooks/useCategories.js';
 import { getProjectsByCategoryIdApi } from '../api/projects/get-projects-by-category-id.js';
+import { SortingControls } from '../components/ui/SortingControls/index.jsx';
 
 export const Home = () => {
     const [projects, projectsLoading] = useProjects();
@@ -13,6 +13,8 @@ export const Home = () => {
 
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [projectsByCategory, setProjectsByCategory] = useState(projects);
+
+    const [sortMethod, setSortMethod] = useState('По рейтингу');
 
     useEffect(() => {
         if (selectedCategory) {
@@ -35,41 +37,36 @@ export const Home = () => {
     });
     const projectNames = filteredProjects.map((project) => project.name);
 
+    let sortedProjects = [...filteredProjects];
+
+    if (sortMethod === 'По рейтингу') {
+        sortedProjects.sort(
+            (project1, project2) => project2.average_grade - project1.average_grade,
+        );
+    } else if (sortMethod === 'По дате') {
+        sortedProjects.sort(
+            (project1, project2) =>
+                new Date(project2.creation_date) - new Date(project1.creation_date),
+        );
+    }
+
     return (
         <Layout>
             <Flex gap="md" align="center" justify="flex-end" direction="row" wrap="wrap">
-                <Autocomplete
-                    leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} />}
-                    rightSection={
-                        <IconEraser
-                            onClick={() => setSearchValue('')}
-                            color="red"
-                            style={{ width: rem(16), height: rem(16), cursor: 'pointer' }}
-                        />
-                    }
-                    placeholder="Поиск"
-                    onChange={(event) => setSearchValue(event)}
-                    data={projectNames}
-                    value={searchValue}
+                <SortingControls
+                    categories={categories}
+                    categoriesLoading={categoriesLoading}
+                    projectNames={projectNames}
+                    searchValue={searchValue}
+                    setSearchValue={setSearchValue}
+                    setSelectedCategory={setSelectedCategory}
+                    setSortMethod={setSortMethod}
                 />
-                <LoadingOverlay visible={categoriesLoading} />
-                <NativeSelect
-                    leftSection={
-                        <IconEraser
-                            onClick={() => setSelectedCategory(null)}
-                            color="red"
-                            style={{ width: rem(16), height: rem(16), cursor: 'pointer' }}
-                        />
-                    }
-                    data={categories}
-                    onChange={(event) => setSelectedCategory(event.target.value)}
-                />
-                <NativeSelect data={['По рейтингу', 'По дате']} />
             </Flex>
 
             <Grid mt={12}>
                 <LoadingOverlay visible={projectsLoading} />
-                {filteredProjects.map((project) => (
+                {sortedProjects.map((project) => (
                     <Grid.Col key={project.id} span={{ base: 12, md: 3, lg: 3 }}>
                         <ProjectCard project={project} />
                     </Grid.Col>
