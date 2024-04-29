@@ -28,6 +28,9 @@ export const ProjectCard = ({ project }) => {
             <Text fw={500} size="lg" mt="xs">
                 {project.name}
             </Text>
+            <Text c="dimmed" size="sm">
+                Автор: {project.user.login}
+            </Text>
         </Card>
     );
 };
@@ -41,5 +44,8 @@ ProjectCard.propTypes = {
         ),
         name: PropTypes.string,
         id: PropTypes.number,
+        user: PropTypes.shape({
+            login: PropTypes.string,
+        }),
     }),
 };
