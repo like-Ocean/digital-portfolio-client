@@ -37,13 +37,15 @@ export const AddCommentForm = ({ onCommentSubmit }) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <Flex direction="column" gap="sm">
+            <Flex w="100%" gap="sm">
                 <TextInput
                     placeholder="Добавить комментарий"
                     error={errors.comment?.message}
+                    w="100%"
                     {...register('comment', requiredValidation())}
                 />
-                <Button type="submit" loading={loading} variant="outline">
+
+                <Button type="submit" loading={loading} variant="filled" flex="none">
                     Отправить
                 </Button>
             </Flex>

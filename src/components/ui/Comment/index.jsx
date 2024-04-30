@@ -43,7 +43,7 @@ export const Comment = ({ comment }) => {
                             {comment.user.login}
                         </Text>
                         <Text size="xs" c="dimmed">
-                            Дата написания:
+                            Дата написания:{' '}
                             {new Date(comment.post_date).toISOString().split('T')[0]}
                         </Text>
                     </Flex>

@@ -41,15 +41,9 @@ export const Menu = () => {
             )}
 
             {!isAuth && (
-                <>
-                    <UnstyledButton className={style.control}>
-                        <Link to="/authorization">Вход</Link>
-                    </UnstyledButton>
-
-                    <UnstyledButton className={style.control}>
-                        <Link to="/registration">Регистрация</Link>
-                    </UnstyledButton>
-                </>
+                <UnstyledButton className={style.control}>
+                    <Link to="/authorization">Вход</Link>
+                </UnstyledButton>
             )}
         </>
     );

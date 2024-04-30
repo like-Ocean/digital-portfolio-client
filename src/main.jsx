@@ -3,5 +3,6 @@ import App from './App.jsx';
 import '@mantine/core/styles.css';
 import './index.css';
 import '@mantine/notifications/styles.css';
+import '@mantine/carousel/styles.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App />);

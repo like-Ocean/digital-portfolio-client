@@ -1,4 +1,4 @@
-import { ActionIcon, Image, LoadingOverlay, Stack } from '@mantine/core';
+import { ActionIcon, BackgroundImage, Image, LoadingOverlay } from '@mantine/core';
 import PropTypes from 'prop-types';
 import { getFile } from '../../../api/file/get-file.js';
 import { IconTrash } from '@tabler/icons-react';
@@ -8,6 +8,7 @@ import { DeleteFileApi } from '../../../api/file/delete-file.js';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { projectActions } from '../../../store/reducers/project-slice.js';
+import { Carousel } from '@mantine/carousel';
 
 export const ProjectImgs = ({ files, removable }) => {
     const param = useParams();
@@ -16,11 +17,6 @@ export const ProjectImgs = ({ files, removable }) => {
     const dispatch = useDispatch();
 
     const [loading, setLoading] = useState(true);
-
-    // возможно нужно удалить
-    const handleImageLoad = () => {
-        setLoading(false);
-    };
 
     const onDelete = async (file_id) => {
         try {
@@ -33,16 +29,24 @@ export const ProjectImgs = ({ files, removable }) => {
     };
 
     return (
-        <Stack align="center" gap="sm">
-            {files &&
-                files.map((file) => (
-                    <div key={file.file_id} className={style.photo}>
-                        <LoadingOverlay visible={loading} />
-                        <Image
-                            radius="md"
-                            src={file ? getFile(file.file_id) : '/src/assets/9214833.jpg'}
-                            onLoad={handleImageLoad}
-                        />
+        <Carousel withIndicators w="100%" height={500} loop>
+            {files?.map((file) => (
+                <Carousel.Slide key={file.file_id} className={style.photo}>
+                    <BackgroundImage
+                        src={file ? getFile(file.file_id) : '/src/assets/9214833.jpg'}
+                        h="100%"
+                    >
+                        <div className={style.image}>
+                            <LoadingOverlay visible={loading} />
+
+                            <Image
+                                src={file ? getFile(file.file_id) : '/src/assets/9214833.jpg'}
+                                onLoad={() => setLoading(false)}
+                                fit="contain"
+                                h="100%"
+                            />
+                        </div>
+
                         {removable && (
                             <ActionIcon
                                 variant="filled"
@@ -55,9 +59,10 @@ export const ProjectImgs = ({ files, removable }) => {
                                 <IconTrash />
                             </ActionIcon>
                         )}
-                    </div>
-                ))}
-        </Stack>
+                    </BackgroundImage>
+                </Carousel.Slide>
+            ))}
+        </Carousel>
     );
 };
 
