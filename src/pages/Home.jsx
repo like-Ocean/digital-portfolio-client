@@ -32,7 +32,10 @@ export const Home = () => {
     const [users, setUsers] = useState([]);
     const [showUsers, setShowUsers] = useState(false);
     const [isUserLoaded, setUserLoad] = useState(true);
+
     useEffect(() => {
+        if (!showUsers) return;
+
         const loadUsers = async () => {
             setUserLoad(true);
             try {
@@ -44,8 +47,10 @@ export const Home = () => {
             }
             setUserLoad(false);
         };
+
         void loadUsers();
-    }, []);
+    }, [showUsers]);
+
     return (
         <Layout>
             <Flex align="center" justify="space-between" direction="row" wrap="wrap">

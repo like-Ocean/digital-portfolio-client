@@ -1,4 +1,4 @@
-import { Card, Image, Text } from '@mantine/core';
+import { Card, Flex, Image, Rating, Text } from '@mantine/core';
 import PropTypes from 'prop-types';
 import { getFile } from '../../../api/file/get-file.js';
 import { useNavigate } from 'react-router-dom';
@@ -25,12 +25,24 @@ export const ProjectCard = ({ project }) => {
                 />
             </Card.Section>
 
-            <Text fw={500} size="lg" mt="xs">
-                {project.name}
-            </Text>
-            <Text c="dimmed" size="sm">
-                Автор: {project.user.login}
-            </Text>
+            <Flex justify="space-between">
+                <div>
+                    <Text fw={500} size="lg" mt="xs">
+                        {project.name}
+                    </Text>
+                    <Text c="dimmed" size="sm">
+                        Автор: {project.user.login}
+                    </Text>
+                </div>
+
+                <Flex align="center" gap={5}>
+                    <Text fw={500} size="lg">
+                        {project.average_grade}
+                    </Text>
+
+                    <Rating count={1} size="xl" value={project.average_grade ? 1 : 0} readOnly />
+                </Flex>
+            </Flex>
         </Card>
     );
 };
@@ -47,5 +59,6 @@ ProjectCard.propTypes = {
         user: PropTypes.shape({
             login: PropTypes.string,
         }),
+        average_grade: PropTypes.number,
     }),
 };
