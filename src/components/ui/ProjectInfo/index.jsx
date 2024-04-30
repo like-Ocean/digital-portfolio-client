@@ -38,7 +38,7 @@ export const ProjectInfo = ({ project }) => {
                     </Text>
                 </Flex>
 
-                {userState.id === project.user.id && (
+                {userState.id === project.user.id ? (
                     <ActionIcon
                         variant="filled"
                         size="lg"
@@ -48,6 +48,8 @@ export const ProjectInfo = ({ project }) => {
                     >
                         <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
                     </ActionIcon>
+                ) : (
+                    <div />
                 )}
 
                 <Modal opened={opened} onClose={close} title="Редактировать" size={800}>

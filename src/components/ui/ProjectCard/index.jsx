@@ -36,11 +36,11 @@ export const ProjectCard = ({ project }) => {
                 </div>
 
                 <Flex align="center" gap={5}>
-                    <Text fw={500} size="lg">
-                        {project.average_grade}
+                    <Text fw={500} size="md">
+                        {project.average_grade.toFixed(1)}
                     </Text>
 
-                    <Rating count={1} size="xl" value={project.average_grade ? 1 : 0} readOnly />
+                    <Rating count={1} size="md" value={project.average_grade ? 1 : 0} readOnly />
                 </Flex>
             </Flex>
         </Card>
