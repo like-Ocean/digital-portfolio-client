@@ -1,37 +1,56 @@
-import { Autocomplete, Button, Flex, PasswordInput, TextInput } from '@mantine/core';
-import { useForm } from 'react-hook-form';
+import { Button, Flex, PasswordInput, Select, TextInput } from '@mantine/core';
+import { Controller, useForm } from 'react-hook-form';
 import {
     emailValidation,
     passwordValidation,
     requiredValidation,
 } from '../../../constants/validation.js';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { registrationApi } from '../../../api/users/registration.js';
 import { useNavigate } from 'react-router-dom';
 import { notifications } from '@mantine/notifications';
-import extractCityNames from '../../../utils/CityNames.js';
-import { getCities } from '../../../api/cities/get-cities.js';
+import { useAreas } from '../../../hooks/useAreas.js';
 
 const RegistrationForm = () => {
     const navigate = useNavigate();
 
-    const [loading, setLoading] = useState(false);
-
     const {
+        control,
         handleSubmit,
         register,
         formState: { errors },
+        watch,
+        setValue,
     } = useForm();
 
-    const [cities, setCities] = useState([]);
-    useEffect(() => {
-        getCities().then((response) => {
-            const cityNames = extractCityNames(response.data);
-            const city = [...new Set(cityNames)];
-            console.log(city);
-            setCities(city);
+    const [areas] = useAreas();
+    const [loading, setLoading] = useState(false);
+
+    const country = watch('country');
+
+    const countries = useMemo(() => {
+        return areas.map((area) => area.name);
+    }, [areas]);
+
+    const cities = useMemo(() => {
+        if (!country) return [];
+
+        const regions = areas.find((area) => area.name === country).areas;
+
+        const cities = [];
+
+        regions.forEach((region) => {
+            if (region.areas.length === 0) {
+                cities.push(region.name);
+            } else {
+                region.areas.forEach((city) => {
+                    cities.push(city.name);
+                });
+            }
         });
-    }, []);
+
+        return [...new Set(cities)].sort();
+    }, [areas, country]);
 
     const onSubmit = async (data) => {
         setLoading(true);
@@ -53,6 +72,10 @@ const RegistrationForm = () => {
         }
         setLoading(false);
     };
+
+    useEffect(() => {
+        setValue('city', null);
+    }, [setValue, country]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -85,7 +108,36 @@ const RegistrationForm = () => {
                     />
                 </Flex>
 
-                <Autocomplete label="Город" placeholder="Поиск" data={cities} />
+                <Controller
+                    control={control}
+                    name="country"
+                    rules={requiredValidation()}
+                    render={({ field }) => (
+                        <Select
+                            label="Страна"
+                            data={countries}
+                            value={field.value}
+                            onChange={field.onChange}
+                            error={errors.country?.message}
+                        />
+                    )}
+                />
+
+                <Controller
+                    control={control}
+                    name="city"
+                    rules={requiredValidation()}
+                    render={({ field }) => (
+                        <Select
+                            label="Город"
+                            data={cities}
+                            value={field.value}
+                            onChange={field.onChange}
+                            error={errors.city?.message}
+                            disabled={cities.length === 0}
+                        />
+                    )}
+                />
 
                 <PasswordInput
                     label="Пароль"
