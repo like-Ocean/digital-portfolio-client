@@ -1,14 +1,16 @@
-import { Button, Flex, PasswordInput, TextInput } from '@mantine/core';
+import { Autocomplete, Button, Flex, PasswordInput, TextInput } from '@mantine/core';
 import { useForm } from 'react-hook-form';
 import {
     emailValidation,
     passwordValidation,
     requiredValidation,
 } from '../../../constants/validation.js';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { registrationApi } from '../../../api/users/registration.js';
 import { useNavigate } from 'react-router-dom';
 import { notifications } from '@mantine/notifications';
+import extractCityNames from '../../../utils/CityNames.js';
+import { getCities } from '../../../api/cities/get-cities.js';
 
 const RegistrationForm = () => {
     const navigate = useNavigate();
@@ -21,6 +23,16 @@ const RegistrationForm = () => {
         formState: { errors },
     } = useForm();
 
+    const [cities, setCities] = useState([]);
+    useEffect(() => {
+        getCities().then((response) => {
+            const cityNames = extractCityNames(response.data);
+            const city = [...new Set(cityNames)];
+            console.log(city);
+            setCities(city);
+        });
+    }, []);
+
     const onSubmit = async (data) => {
         setLoading(true);
         try {
@@ -29,6 +41,7 @@ const RegistrationForm = () => {
                 data.email,
                 data.first_name,
                 data.surname,
+                data.city,
                 data.password,
             );
             navigate('/authorization');
@@ -71,6 +84,8 @@ const RegistrationForm = () => {
                         {...register('surname', requiredValidation())}
                     />
                 </Flex>
+
+                <Autocomplete label="Город" placeholder="Поиск" data={cities} />
 
                 <PasswordInput
                     label="Пароль"

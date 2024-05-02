@@ -37,7 +37,7 @@ export const ProjectCard = ({ project }) => {
 
                 <Flex align="center" gap={5}>
                     <Text fw={500} size="md">
-                        {project.average_grade.toFixed(1)}
+                        {project.average_grade ? project.average_grade.toFixed(1) : ''}
                     </Text>
 
                     <Rating count={1} size="md" value={project.average_grade ? 1 : 0} readOnly />

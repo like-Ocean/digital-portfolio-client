@@ -1,5 +1,5 @@
 import { Layout } from '../components/ui/Layout/index.jsx';
-import { Flex, Grid, LoadingOverlay, Switch } from '@mantine/core';
+import { Autocomplete, Flex, Grid, LoadingOverlay, NativeSelect, Switch } from '@mantine/core';
 import { useProjects } from '../hooks/useProjects.js';
 import { ProjectCard } from '../components/ui/ProjectCard/index.jsx';
 import { useEffect, useState } from 'react';
@@ -53,6 +53,21 @@ export const Home = () => {
 
     return (
         <Layout>
+            {/*<Grid>*/}
+            {/*    <Grid.Col span={12}>*/}
+            {/*        <Flex gap="md" align="center" justify="flex-end" direction="row" wrap="wrap">*/}
+            {/*            <Switch*/}
+            {/*                label="Показать пользователей"*/}
+            {/*                checked={showUsers}*/}
+            {/*                onChange={(event) => setShowUsers(event.currentTarget.checked)}*/}
+            {/*            />*/}
+            {/*            <Autocomplete />*/}
+            {/*            <NativeSelect />*/}
+            {/*            <NativeSelect />*/}
+            {/*            <NativeSelect />*/}
+            {/*        </Flex>*/}
+            {/*    </Grid.Col>*/}
+            {/*</Grid>*/}
             <Flex align="center" justify="space-between" direction="row" wrap="wrap">
                 <Switch
                     label="Показать пользователей"

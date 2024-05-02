@@ -34,15 +34,17 @@ export const ProjectComments = ({ comments }) => {
 };
 
 ProjectComments.propTypes = {
-    comments: PropTypes.arrayOf({
-        id: PropTypes.number,
-        comment: PropTypes.string,
-        post_date: PropTypes.string,
-        user: PropTypes.shape({
+    comments: PropTypes.arrayOf(
+        PropTypes.shape({
             id: PropTypes.number,
-            login: PropTypes.string,
-            first_name: PropTypes.string,
-            surname: PropTypes.string,
+            comment: PropTypes.string,
+            post_date: PropTypes.string,
+            user: PropTypes.shape({
+                id: PropTypes.number,
+                login: PropTypes.string,
+                first_name: PropTypes.string,
+                surname: PropTypes.string,
+            }),
         }),
-    }),
+    ),
 };
