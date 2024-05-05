@@ -3,6 +3,7 @@ import { useDisclosure } from '@mantine/hooks';
 import EditUserForm from '../../forms/EditUserForm/index.jsx';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+import { getFile } from '../../../api/file/get-file.js';
 
 export const UserInfo = ({ user }) => {
     const userState = useSelector((state) => state.user.user);
@@ -11,7 +12,11 @@ export const UserInfo = ({ user }) => {
     return (
         <Card shadow="xl" padding="md">
             <Flex justify="center" align="center" mt="md" mb="xs">
-                <Avatar color="cyan" size={90}>
+                <Avatar
+                    src={user?.avatar?.file_id ? getFile(user.avatar.file_id) : undefined}
+                    color="cyan"
+                    size={90}
+                >
                     {user?.first_name[0] + user?.surname[0]}
                 </Avatar>
             </Flex>
@@ -47,13 +52,27 @@ export const UserInfo = ({ user }) => {
                     <Text size="sm">{user?.email}</Text>
                 </Flex>
 
+                <Flex>
+                    <Badge color="blue" mr="md">
+                        Страна:
+                    </Badge>
+                    <Text size="sm">{user?.country}</Text>
+                </Flex>
+
+                <Flex>
+                    <Badge color="blue" mr="md">
+                        Город:
+                    </Badge>
+                    <Text size="sm">{user?.city}</Text>
+                </Flex>
+
                 <Flex direction="column">
                     <Badge color="blue">О себе:</Badge>
                     <Text size="sm">{user?.about}</Text>
                 </Flex>
             </Flex>
 
-            <Modal opened={opened} onClose={close} title="Редактировать" size={550}>
+            <Modal opened={opened} onClose={close} title="Редактировать" size={650}>
                 <EditUserForm opened={opened} onClose={close} />
             </Modal>
 
@@ -73,6 +92,11 @@ UserInfo.propTypes = {
         email: PropTypes.string,
         first_name: PropTypes.string,
         surname: PropTypes.string,
+        country: PropTypes.string,
+        city: PropTypes.string,
+        avatar: PropTypes.shape({
+            file_id: PropTypes.string,
+        }),
         phone: PropTypes.string,
         about: PropTypes.string,
     }),

@@ -71,7 +71,7 @@ export const AddCertificateForm = () => {
                         <FileInput
                             {...field}
                             label="Выберите файл"
-                            placeholder="Выберите файлы"
+                            placeholder="Выберите файл"
                             accept="application/pdf"
                             error={errors.files?.message}
                             value={value}

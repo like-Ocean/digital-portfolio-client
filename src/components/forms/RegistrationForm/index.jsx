@@ -5,14 +5,18 @@ import {
     passwordValidation,
     requiredValidation,
 } from '../../../constants/validation.js';
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { registrationApi } from '../../../api/users/registration.js';
 import { useNavigate } from 'react-router-dom';
 import { notifications } from '@mantine/notifications';
-import { useAreas } from '../../../hooks/useAreas.js';
+import { useCountries } from '../../../hooks/useCountries.js';
+import { useCities } from '../../../hooks/useCities.js';
+import { useResetCity } from '../../../hooks/useResetCity.js';
 
 const RegistrationForm = () => {
     const navigate = useNavigate();
+
+    const countries = useCountries();
 
     const {
         control,
@@ -23,43 +27,21 @@ const RegistrationForm = () => {
         setValue,
     } = useForm();
 
-    const [areas] = useAreas();
-    const [loading, setLoading] = useState(false);
-
     const country = watch('country');
+    const cities = useCities(country);
+    useResetCity(setValue, country);
 
-    const countries = useMemo(() => {
-        return areas.map((area) => area.name);
-    }, [areas]);
-
-    const cities = useMemo(() => {
-        if (!country) return [];
-
-        const regions = areas.find((area) => area.name === country).areas;
-
-        const cities = [];
-
-        regions.forEach((region) => {
-            if (region.areas.length === 0) {
-                cities.push(region.name);
-            } else {
-                region.areas.forEach((city) => {
-                    cities.push(city.name);
-                });
-            }
-        });
-
-        return [...new Set(cities)].sort();
-    }, [areas, country]);
+    const [loading, setLoading] = useState(false);
 
     const onSubmit = async (data) => {
         setLoading(true);
         try {
             await registrationApi(
-                data.login,
+                data.login.trim(),
                 data.email,
                 data.first_name,
                 data.surname,
+                data.country,
                 data.city,
                 data.password,
             );
@@ -72,10 +54,6 @@ const RegistrationForm = () => {
         }
         setLoading(false);
     };
-
-    useEffect(() => {
-        setValue('city', null);
-    }, [setValue, country]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

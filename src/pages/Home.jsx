@@ -1,15 +1,15 @@
 import { Layout } from '../components/ui/Layout/index.jsx';
-import { Autocomplete, Flex, Grid, LoadingOverlay, NativeSelect, Switch } from '@mantine/core';
+import { Flex, Grid, LoadingOverlay, Switch } from '@mantine/core';
 import { useProjects } from '../hooks/useProjects.js';
 import { ProjectCard } from '../components/ui/ProjectCard/index.jsx';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useCategories } from '../hooks/useCategories.js';
 import { SortingControls } from '../components/ui/SortingControls/index.jsx';
 import { UserCard } from '../components/ui/UserCard/index.jsx';
-import { getAllUsers } from '../api/users/get-all-users.js';
 import { useProjectsByCategory } from '../hooks/useProjectsByCategory.js';
 import { useFilteredProjects } from '../hooks/useFilteredProjects.js';
 import { useSortedProjects } from '../hooks/useSortedProjects.js';
+import { UserSortingControls } from '../components/ui/UserSortingControls/index.jsx';
 
 export const Home = () => {
     const [projects, projectsLoading] = useProjects();
@@ -33,61 +33,51 @@ export const Home = () => {
     const [showUsers, setShowUsers] = useState(false);
     const [isUserLoaded, setUserLoad] = useState(true);
 
-    useEffect(() => {
-        if (!showUsers) return;
-
-        const loadUsers = async () => {
-            setUserLoad(true);
-            try {
-                const res = await getAllUsers();
-                setUsers(res.data);
-                console.log(res.data);
-            } catch (e) {
-                console.log(e);
-            }
-            setUserLoad(false);
-        };
-
-        void loadUsers();
-    }, [showUsers]);
-
     return (
         <Layout>
-            {/*<Grid>*/}
-            {/*    <Grid.Col span={12}>*/}
-            {/*        <Flex gap="md" align="center" justify="flex-end" direction="row" wrap="wrap">*/}
-            {/*            <Switch*/}
-            {/*                label="Показать пользователей"*/}
-            {/*                checked={showUsers}*/}
-            {/*                onChange={(event) => setShowUsers(event.currentTarget.checked)}*/}
-            {/*            />*/}
-            {/*            <Autocomplete />*/}
-            {/*            <NativeSelect />*/}
-            {/*            <NativeSelect />*/}
-            {/*            <NativeSelect />*/}
-            {/*        </Flex>*/}
-            {/*    </Grid.Col>*/}
-            {/*</Grid>*/}
-            <Flex align="center" justify="space-between" direction="row" wrap="wrap">
-                <Switch
-                    label="Показать пользователей"
-                    checked={showUsers}
-                    onChange={(event) => setShowUsers(event.currentTarget.checked)}
-                />
-                <Flex gap="md" align="center" justify="flex-end" direction="row" wrap="wrap">
-                    {!showUsers && (
-                        <SortingControls
-                            categories={categories}
-                            categoriesLoading={categoriesLoading}
-                            projectNames={projectNames}
-                            searchValue={searchValue}
-                            setSearchValue={setSearchValue}
-                            setSelectedCategory={setSelectedCategory}
-                            setSortMethod={setSortMethod}
+            <Grid>
+                <Grid.Col span={12}>
+                    <Flex
+                        gap="md"
+                        align="center"
+                        justify="space-between"
+                        direction="row"
+                        wrap="wrap"
+                    >
+                        <Switch
+                            label="Показать пользователей"
+                            checked={showUsers}
+                            onChange={(event) => setShowUsers(event.currentTarget.checked)}
                         />
-                    )}
-                </Flex>
-            </Flex>
+                        <Flex
+                            gap="md"
+                            align="center"
+                            justify="flex-end"
+                            direction="row"
+                            wrap="wrap"
+                        >
+                            {!showUsers && (
+                                <SortingControls
+                                    categories={categories}
+                                    categoriesLoading={categoriesLoading}
+                                    projectNames={projectNames}
+                                    searchValue={searchValue}
+                                    setSearchValue={setSearchValue}
+                                    setSelectedCategory={setSelectedCategory}
+                                    setSortMethod={setSortMethod}
+                                />
+                            )}
+                            {showUsers && (
+                                <UserSortingControls
+                                    setUsers={setUsers}
+                                    setUserLoad={setUserLoad}
+                                    showUsers={showUsers}
+                                />
+                            )}
+                        </Flex>
+                    </Flex>
+                </Grid.Col>
+            </Grid>
 
             <Grid mt={12}>
                 {!showUsers &&

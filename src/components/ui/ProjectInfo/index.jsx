@@ -6,10 +6,10 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { EditProjectForm } from '../../forms/EditProjectForm/index.jsx';
 import { AddRatingForm } from '../../forms/AddRatingForm/index.jsx';
+import { getFile } from '../../../api/file/get-file.js';
 
 export const ProjectInfo = ({ project }) => {
     const userState = useSelector((state) => state.user.user);
-
     const router = useNavigate();
     const [opened, { open, close }] = useDisclosure(false);
 
@@ -17,8 +17,16 @@ export const ProjectInfo = ({ project }) => {
         <div style={{ position: 'relative' }}>
             <Flex w="100%" mb={20} justify="space-between" align="center">
                 <Flex mih={50} justify="flex-start" align="center" direction="row" gap="sm">
-                    <Avatar color="cyan" size={50}>
-                        {project.user && project.user.first_name[0] + project.user.surname[0]}
+                    <Avatar
+                        src={
+                            project.user && project.user?.avatar?.file_id
+                                ? getFile(project.user.avatar.file_id)
+                                : undefined
+                        }
+                        color="cyan"
+                        size={50}
+                    >
+                        {project.user && project.user?.first_name[0] + project.user?.surname[0]}
                     </Avatar>
                     <Text
                         fw={500}
@@ -97,6 +105,9 @@ ProjectInfo.propTypes = {
             login: PropTypes.string,
             first_name: PropTypes.string,
             surname: PropTypes.string,
+            avatar: PropTypes.shape({
+                file_id: PropTypes.string,
+            }),
         }),
         files: PropTypes.arrayOf(
             PropTypes.shape({
