@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { EditCertificateForm } from '../../forms/EditCertificateForm/index.jsx';
+import { getFile } from '../../../api/file/get-file.js';
 
 export const CertificateInfo = ({ certificate }) => {
     const router = useNavigate();
@@ -35,9 +36,17 @@ export const CertificateInfo = ({ certificate }) => {
                 </Modal>
             </Flex>
             <Flex mih={50} mb={20} justify="flex-start" align="center" direction="row" gap="sm">
-                <Avatar color="cyan" size={50}>
+                <Avatar
+                    src={
+                        certificate.user && certificate.user?.avatar?.file_id
+                            ? getFile(certificate.user.avatar.file_id)
+                            : undefined
+                    }
+                    color="cyan"
+                    size={50}
+                >
                     {certificate.user &&
-                        certificate.user.first_name[0] + certificate.user.surname[0]}
+                        certificate.user?.first_name[0] + certificate.user?.surname[0]}
                 </Avatar>
                 <Text
                     fw={500}
@@ -85,6 +94,9 @@ CertificateInfo.propTypes = {
             id: PropTypes.number,
             login: PropTypes.string,
             surname: PropTypes.string,
+            avatar: PropTypes.shape({
+                file_id: PropTypes.string,
+            }),
         }),
     }),
 };

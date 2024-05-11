@@ -6,10 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { deleteCommentApi } from '../../../api/comments/delete-comment.js';
 import { commentActions } from '../../../store/reducers/comment-slice.js';
+import { getFile } from '../../../api/file/get-file.js';
 
 export const Comment = ({ comment }) => {
     const dispatch = useDispatch();
-
+    console.log(comment);
     const router = useNavigate();
 
     const userState = useSelector((state) => state.user.user);
@@ -30,8 +31,16 @@ export const Comment = ({ comment }) => {
         <Card shadow="null" withBorder>
             <Flex direction="row" justify="space-between" align="center">
                 <Flex direction="row" gap="sm" align="center">
-                    <Avatar color="red" size={40}>
-                        {comment.user.first_name[0] + comment.user.surname[0]}
+                    <Avatar
+                        src={
+                            comment.user && comment.user?.avatar?.file_id
+                                ? getFile(comment.user.avatar.file_id)
+                                : undefined
+                        }
+                        color="cyan"
+                        size={40}
+                    >
+                        {comment.user && comment.user?.first_name[0] + comment.user?.surname[0]}
                     </Avatar>
                     <Flex direction="column">
                         <Text
@@ -80,6 +89,9 @@ Comment.propTypes = {
             login: PropTypes.string,
             first_name: PropTypes.string,
             surname: PropTypes.string,
+            avatar: PropTypes.shape({
+                file_id: PropTypes.string,
+            }),
         }),
     }),
     onCommentDelete: PropTypes.func,
