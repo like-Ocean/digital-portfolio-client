@@ -22,7 +22,7 @@ const AuthorizationForm = () => {
     const onSubmit = async (data) => {
         setLoading(true);
         try {
-            const res = await authorizationApi(data.login, data.password);
+            const res = await authorizationApi(data.login.trim(), data.password);
             dispatch(userActions.login(res.data));
             navigate('/');
         } catch (e) {
