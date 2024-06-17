@@ -11,6 +11,15 @@ export const SortingControls = ({
     setSelectedCategory,
     setSortMethod,
 }) => {
+    const defaultOption = { value: null, label: 'По умолчанию' };
+    const categoryOptions = [defaultOption, ...categories];
+
+    const setSelectedCategoryHandler = (value) => {
+        if (value === 'По умолчанию') return setSelectedCategory(undefined);
+
+        setSelectedCategory(value);
+    };
+
     return (
         <>
             <Autocomplete
@@ -29,15 +38,8 @@ export const SortingControls = ({
             />
             <LoadingOverlay visible={categoriesLoading} />
             <NativeSelect
-                leftSection={
-                    <IconEraser
-                        onClick={() => setSelectedCategory(null)}
-                        color="red"
-                        style={{ width: rem(16), height: rem(16), cursor: 'pointer' }}
-                    />
-                }
-                data={categories}
-                onChange={(event) => setSelectedCategory(event.target.value)}
+                data={categoryOptions}
+                onChange={(event) => setSelectedCategoryHandler(event.target.value)}
             />
             <NativeSelect
                 data={['По рейтингу', 'По дате']}
